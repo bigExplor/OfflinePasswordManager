@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- 背景色 -->
+    <item android:drawable="@color/white"/>
+
+    <!-- 上面的 logo -->
+    <item android:top="150dp">
+        <bitmap
+            android:gravity="center_horizontal|top"
+            android:src="@mipmap/app_name" />
+    </item>
+
+    <!-- 下面的 logo -->
+    <item android:bottom="150dp">
+        <bitmap
+            android:gravity="center_horizontal|bottom"
+            android:src="@mipmap/ic_launcher_logo" />
+    </item>
+</layer-list>

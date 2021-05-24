@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    android:layout_marginTop="12dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:padding="10dp"
+    android:clickable="true"
+    android:id="@+id/ll_container"
+    android:background="@drawable/selector_type_item">
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:src="@drawable/game_cover"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="15dp"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:text="游戏"/>
+
+    <TextView
+        android:id="@+id/tv_size"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/shape_size"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:text="12"/>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/right_grey"/>
+
+</LinearLayout>

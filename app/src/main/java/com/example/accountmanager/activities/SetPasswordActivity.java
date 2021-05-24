@@ -1,0 +1,80 @@
+package com.example.accountmanager.activities;
+
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.example.accountmanager.R;
+import com.example.accountmanager.base.BaseActivity;
+import com.example.accountmanager.ui.TitleBar;
+import com.example.accountmanager.utils.SpUtil;
+
+public class SetPasswordActivity extends BaseActivity implements View.OnClickListener {
+
+    private TitleBar titleBar;
+    private EditText et_pwd;
+    private EditText et_confirm;
+    private Button btn;
+    private boolean hasPwd;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_set_password;
+    }
+
+    @Override
+    protected void initView() {
+        titleBar = findViewById(R.id.titleBar);
+        et_pwd = findViewById(R.id.et_pwd);
+        et_confirm = findViewById(R.id.et_confirm);
+        btn = findViewById(R.id.btn);
+    }
+
+    @Override
+    protected void initListener() {
+        btn.setOnClickListener(this);
+    }
+
+    @Override
+    protected void initData() {
+        titleBar.setText("设置二级密码");
+        titleBar.setLeft(R.drawable.left, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        hasPwd = !TextUtils.isEmpty(SpUtil.getInstance().getString("password"));
+        if (hasPwd) {
+            btn.setText("确认关闭");
+            btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_btn_nagtive));
+        } else {
+            btn.setText("确定");
+            btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_btn_positive));
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        String pwd = et_pwd.getText().toString();
+        String confirm = et_confirm.getText().toString();
+        if (TextUtils.isEmpty(pwd) || pwd.length() < 4) {
+            showToast("输入4位密码");
+            return;
+        }
+        if (!pwd.equals(confirm)) {
+            showToast("两次密码不匹配");
+            return;
+        }
+        if (hasPwd) {
+            SpUtil.getInstance().removeValue("password");
+            SpUtil.getInstance().removeValue("finger");
+            showToast("关闭成功");
+        } else {
+            SpUtil.getInstance().putString("password", pwd);
+            showToast("开启成功");
+        }
+        finish();
+    }
+}

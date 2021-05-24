@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/grey_content"
+    tools:context=".activities.AddAccountActivity">
+
+    <com.example.accountmanager.ui.TitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/et_title"
+            style="@style/et_normal"
+            android:drawableLeft="@drawable/title"
+            android:singleLine="true"
+            android:maxLength="20"
+            android:hint="应用/网站名称"/>
+
+        <EditText
+            android:id="@+id/et_username"
+            style="@style/et_normal"
+            android:drawableLeft="@drawable/username"
+            android:singleLine="true"
+            android:maxLength="20"
+            android:hint="用户名"/>
+
+        <EditText
+            android:id="@+id/et_mail"
+            style="@style/et_normal"
+            android:drawableLeft="@drawable/mail"
+            android:singleLine="true"
+            android:maxLength="50"
+            android:hint="邮箱"/>
+
+        <EditText
+            android:id="@+id/et_phone"
+            style="@style/et_normal"
+            android:drawableLeft="@drawable/phone"
+            android:singleLine="true"
+            android:maxLength="20"
+            android:inputType="number"
+            android:hint="电话"/>
+
+        <TextView
+            android:id="@+id/tv_account"
+            android:drawableLeft="@drawable/account"
+            android:drawableRight="@drawable/select"
+            android:textColor="@color/work"
+            android:text="与用户名绑定"
+            style="@style/et_normal" />
+
+        <EditText
+            android:id="@+id/et_password"
+            style="@style/et_normal"
+            android:drawableLeft="@drawable/password_grey"
+            android:singleLine="true"
+            android:maxLength="20"
+            android:hint="密码"/>
+
+        <EditText
+            android:id="@+id/et_url"
+            style="@style/et_normal"
+            android:drawableLeft="@drawable/url"
+            android:singleLine="true"
+            android:maxLength="100"
+            android:ellipsize="end"
+            android:hint="网址"/>
+
+        <EditText
+            android:id="@+id/et_note"
+            style="@style/et_normal"
+            android:drawableLeft="@drawable/note"
+            android:maxLength="100"
+            android:maxLines="3"
+            android:hint="备注"/>
+    </LinearLayout>
+</LinearLayout>
