@@ -10,15 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TypeDao {
-    private MySQLiteHelper helper;
+    private final MySQLiteHelper helper;
     private SQLiteDatabase db = null;
-    private AccountDao dao;
+    private final AccountDao dao;
 
     public TypeDao() {
         helper = MySQLiteHelper.getInstance();
         dao = new AccountDao();
     }
 
+    /* 获取所有类别信息 */
     public List<Type> getAllType() {
         db = helper.getWritableDatabase();
         List<Type> list = new ArrayList<>();
@@ -31,6 +32,7 @@ public class TypeDao {
         return list;
     }
 
+    /* 根据id获取类别信息 */
     public Type getTypeById(int typeId) {
         db = helper.getWritableDatabase();
         String sql = "select * from type where id = ? ";
@@ -41,6 +43,29 @@ public class TypeDao {
         }
         db.close();
         return type;
+    }
+
+    /* 根据类别名称获取类别信息（精确匹配） */
+    public boolean checkTypeByName(String name) {
+        db = helper.getWritableDatabase();
+        String sql = "select * from type where name = ? ";
+        Cursor cursor = db.rawQuery(sql, new String[]{name});
+        boolean typeExist = cursor.moveToNext();
+        cursor.close();
+        db.close();
+        return typeExist;
+    }
+
+    /* 添加类别信息 */
+    public boolean addType(Type type) {
+        if (checkTypeByName(type.getName())) { // 存在同名类名返回 false
+            return false;
+        }
+        db = helper.getWritableDatabase();
+        String sql = "insert into type (name, imgId) values (?, ?) ";
+        db.execSQL(sql, new String[]{type.getName(), "" + type.getImgId()});
+        db.close();
+        return true;
     }
 
     private Type getTypeFromCursor(Cursor cursor) {

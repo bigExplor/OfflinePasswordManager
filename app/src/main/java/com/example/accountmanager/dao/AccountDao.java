@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountDao {
-    private MySQLiteHelper helper;
+    private final MySQLiteHelper helper;
     private SQLiteDatabase db = null;
 
     public AccountDao() {

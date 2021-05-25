@@ -63,6 +63,11 @@ public class TitleBar extends RelativeLayout {
         }
     }
 
+    public void setRightVisibility(boolean visibility) {
+        if (visibility) iv_right.setVisibility(View.VISIBLE);
+        else iv_right.setVisibility(View.GONE);
+    }
+
     public void setRight2(int resource, OnClickListener listener) {
         if (iv_right2 != null) {
             iv_right2.setVisibility(View.VISIBLE);

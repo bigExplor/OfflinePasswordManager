@@ -1,5 +1,6 @@
 package com.example.accountmanager.activities;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.View;
@@ -42,12 +43,12 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     private HomeFragment homeFragment;
     private ChestFragment chestFragment;
 
-    private AccountDao accountDao = new AccountDao();
+    private final AccountDao accountDao = new AccountDao();
 
     private boolean isBack = false;
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
-    private Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
+    private final Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
         @Override
         public boolean shouldSkipField(FieldAttributes f) {
             return f.getName().equals("type");
@@ -81,6 +82,11 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         rb_my.setOnCheckedChangeListener(this);
         rb_home.setOnCheckedChangeListener(this);
         rb_chest.setOnCheckedChangeListener(this);
+
+        titleBar.setRight(R.drawable.add, v -> {
+            Intent intent = new Intent(MainActivity.this, AddTypeActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
@@ -120,12 +126,15 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         if (isChecked) {
             switch (buttonView.getId()) {
                 case R.id.rb_my:
+                    titleBar.setRightVisibility(false);
                     switchFragment(MyFragment.class.getSimpleName());
                     break;
                 case R.id.rb_home:
+                    titleBar.setRightVisibility(true);
                     switchFragment(HomeFragment.class.getSimpleName());
                     break;
                 case R.id.rb_chest:
+                    titleBar.setRightVisibility(false);
                     switchFragment(ChestFragment.class.getSimpleName());
                     break;
             }

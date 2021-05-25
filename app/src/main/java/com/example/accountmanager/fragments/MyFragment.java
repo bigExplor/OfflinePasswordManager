@@ -70,9 +70,9 @@ public class MyFragment extends Fragment implements View.OnClickListener {
 
     private void setChooseFinger() {
         if (SpUtil.getInstance().getBoolean("finger")) {
-            iv_choose.setImageResource(R.drawable.choosen);
+            iv_choose.setImageResource(R.drawable.chosen);
         } else {
-            iv_choose.setImageResource(R.drawable.no_choosen);
+            iv_choose.setImageResource(R.drawable.no_chosen);
         }
     }
 
