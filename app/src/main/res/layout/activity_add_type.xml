@@ -31,7 +31,7 @@
         android:layout_marginRight="20dp"/>
 
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/confirm_btn"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
@@ -41,4 +41,17 @@
         android:textSize="16sp"
         android:background="@drawable/shape_btn_positive"
         android:text="添加"/>
+
+    <Button
+        android:id="@+id/cancel_btn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:background="@drawable/shape_btn_nagtive"
+        android:visibility="gone"
+        android:text="删除"/>
 </LinearLayout>

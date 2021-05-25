@@ -42,30 +42,6 @@ public class Type {
         this.accounts = list;
     }
 
-    public int getImgIdByName() {
-        switch (name) {
-            case "游戏":
-                return R.drawable.game_cover;
-            case "工作":
-                return R.drawable.work_cover;
-            case "娱乐":
-                return R.drawable.happy_cover;
-            case "社交":
-                return R.drawable.chat_cover;
-            case "教育":
-                return R.drawable.education_cover;
-            case "效率":
-                return R.drawable.xiaolv_cover;
-            case "工具":
-                return R.drawable.tools_cover;
-            case "私密":
-                return R.drawable.private_cover;
-            case "其他":
-            default:
-                return R.drawable.others_cover;
-        }
-    }
-
     @Override
     public String toString() {
         return "Type{" +

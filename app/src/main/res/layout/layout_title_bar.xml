@@ -26,6 +26,16 @@
         android:text="首页"/>
 
     <ImageView
+        android:id="@+id/iv_right3"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/iv_right2"
+        android:src="@drawable/setting"
+        android:visibility="gone"/>
+
+    <ImageView
         android:id="@+id/iv_right2"
         android:layout_width="25dp"
         android:layout_height="25dp"

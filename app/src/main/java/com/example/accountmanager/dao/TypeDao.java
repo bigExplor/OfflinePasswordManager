@@ -3,6 +3,7 @@ package com.example.accountmanager.dao;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.accountmanager.R;
 import com.example.accountmanager.bean.Account;
 import com.example.accountmanager.bean.Type;
 
@@ -68,11 +69,29 @@ public class TypeDao {
         return true;
     }
 
+    /* 删除类别信息 */
+    public void removeType(int typeId) {
+        db = helper.getWritableDatabase();
+        String sql = "delete from type where id = ? ";
+        db.execSQL(sql, new String[]{"" + typeId});
+        db.close();
+    }
+
+    /* 更新类别信息 */
+    public void updateType(Type type) {
+        db = helper.getWritableDatabase();
+        String sql = "update type set name = ?, imgId = ? where id = ? ";
+        db.execSQL(sql, new String[]{type.getName(), "" + type.getImgId(), "" + type.getId()});
+        db.close();
+    }
+
     private Type getTypeFromCursor(Cursor cursor) {
         Type type = new Type();
         type.setId(cursor.getInt(cursor.getColumnIndex("id")));
         type.setName(cursor.getString(cursor.getColumnIndex("name")));
-        type.setImgId(type.getImgIdByName());
+        int imgId = cursor.getInt(cursor.getColumnIndex("imgId"));
+        if (imgId <= 0) imgId = R.drawable.others_cover;
+        type.setImgId(imgId);
         List<Account> accounts = dao.getAccountByType(type.getId());
         type.setAccounts(accounts);
         for (Account account: accounts) {

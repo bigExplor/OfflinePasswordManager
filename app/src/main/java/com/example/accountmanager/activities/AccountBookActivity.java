@@ -38,8 +38,8 @@ public class AccountBookActivity extends BaseActivity {
     private AccountAdapter adapter;
     private List<Account> accounts;
 
-    private TypeDao typeDao = new TypeDao();
-    private AccountDao accountDao = new AccountDao();
+    private final TypeDao typeDao = new TypeDao();
+    private final AccountDao accountDao = new AccountDao();
     private RelativeLayout rl_empty;
     private boolean isOpenEye = false;
     private SwipeRefreshLayout swipe;
@@ -60,11 +60,21 @@ public class AccountBookActivity extends BaseActivity {
 
     @Override
     protected void initListener() {
-        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                setAdapter(getAccountList());
-            }
+        swipe.setOnRefreshListener(() -> setAdapter(getAccountList()));
+        titleBar.setLeft(R.drawable.left, v -> finish());
+        titleBar.setRight(R.drawable.add, v -> {
+            Intent intent = new Intent(AccountBookActivity.this, AddAccountActivity.class);
+            intent.putExtra("from", "add");
+            intent.putExtra("typeId", id);
+            startActivity(intent);
+        });
+        setTitleEye();
+        titleBar.setRight3(R.drawable.setting, v -> {
+            Intent intent = new Intent(this, AddTypeActivity.class);
+            intent.putExtra("from", "setting");
+            intent.putExtra("id", id);
+            intent.putExtra("name", name);
+            startActivity(intent);
         });
     }
 
@@ -80,33 +90,14 @@ public class AccountBookActivity extends BaseActivity {
         }
         titleBar.setText(name);
         if ("私密".equals(name)) titleBar.setBackground(R.color.black);
-        titleBar.setLeft(R.drawable.left, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        titleBar.setRight(R.drawable.add, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AccountBookActivity.this, AddAccountActivity.class);
-                intent.putExtra("from", "add");
-                intent.putExtra("typeId", id);
-                startActivity(intent);
-            }
-        });
-        setTitleEye();
         setAdapter(getAccountList());
     }
 
     private void setTitleEye() {
         int drawable = isOpenEye? R.drawable.eye_open_white: R.drawable.eye_close_white;
-        titleBar.setRight2(drawable, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isOpenEye = !isOpenEye;
-                setTitleEye();
-            }
+        titleBar.setRight2(drawable, v -> {
+            isOpenEye = !isOpenEye;
+            setTitleEye();
         });
         if (accounts == null) return;
         for (Account account: accounts) {
@@ -124,6 +115,8 @@ public class AccountBookActivity extends BaseActivity {
     }
 
     private void setAdapter(List<Account> list) {
+        Type t = typeDao.getTypeById(id);
+        titleBar.setText(t.getName());
         if (list.size() == 0) {
             rv.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
@@ -200,7 +193,6 @@ public class AccountBookActivity extends BaseActivity {
     private List<Account> getAccountList() {
         Type type = typeDao.getTypeById(id);
         if (type == null) {
-            showToast("获取分类信息失败");
             finish();
             return new ArrayList<>();
         }
@@ -211,7 +203,7 @@ public class AccountBookActivity extends BaseActivity {
     @Override
     protected int getStatusColor() {
         int color = R.color.logoRed;
-        if (name != null && "私密".equals(name)) {
+        if ("私密".equals(name)) {
             color = R.color.black;
         }
         return color;

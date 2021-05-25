@@ -14,11 +14,12 @@ public class TitleBar extends RelativeLayout {
 
     private ImageView iv_left;
     private ImageView iv_right;
+    private ImageView iv_right2;
+    private ImageView iv_right3;
     private TextView tv_title;
     private RelativeLayout rl_container;
 
     private Context context;
-    private ImageView iv_right2;
 
     public TitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -31,6 +32,7 @@ public class TitleBar extends RelativeLayout {
         iv_left = findViewById(R.id.iv_left);
         iv_right = findViewById(R.id.iv_right);
         iv_right2 = findViewById(R.id.iv_right2);
+        iv_right3 = findViewById(R.id.iv_right3);
         tv_title = findViewById(R.id.tv_title);
         rl_container = findViewById(R.id.rl_container);
     }
@@ -73,6 +75,14 @@ public class TitleBar extends RelativeLayout {
             iv_right2.setVisibility(View.VISIBLE);
             iv_right2.setImageResource(resource);
             iv_right2.setOnClickListener(listener);
+        }
+    }
+
+    public void setRight3(int resource, OnClickListener listener) {
+        if (iv_right3 != null) {
+            iv_right3.setVisibility(View.VISIBLE);
+            iv_right3.setImageResource(resource);
+            iv_right3.setOnClickListener(listener);
         }
     }
 }
