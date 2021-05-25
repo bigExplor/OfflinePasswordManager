@@ -25,6 +25,9 @@ import com.example.accountmanager.utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author CharlesLu
+ */
 public class AccountBookActivity extends BaseActivity {
 
     private TitleBar titleBar;
