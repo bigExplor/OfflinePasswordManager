@@ -21,6 +21,10 @@ import com.example.accountmanager.utils.ScreenUtil;
 
 import java.util.List;
 
+/**
+ * @author CharlesLu
+ * @description 搜索界面
+ */
 public class SearchActivity extends BaseActivity {
 
     private TextView tv_cancel;

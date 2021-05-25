@@ -17,6 +17,10 @@ import com.example.accountmanager.dao.AccountDao;
 import com.example.accountmanager.ui.TitleBar;
 import com.example.accountmanager.utils.ScreenUtil;
 
+/**
+ * @author CharlesLu
+ * @description 添加账号的界面
+ */
 public class AddAccountActivity extends BaseActivity implements View.OnFocusChangeListener {
 
     private TitleBar titleBar;

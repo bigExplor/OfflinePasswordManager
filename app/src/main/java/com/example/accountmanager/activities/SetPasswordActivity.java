@@ -10,6 +10,10 @@ import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.ui.TitleBar;
 import com.example.accountmanager.utils.SpUtil;
 
+/**
+ * @author CharlesLu
+ * @description 设置二级密码的界面
+ */
 public class SetPasswordActivity extends BaseActivity implements View.OnClickListener {
 
     private TitleBar titleBar;

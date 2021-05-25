@@ -14,6 +14,10 @@ import com.example.accountmanager.utils.SpUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author CharlesLu
+ * @description 启动时输入密码的界面
+ */
 public class PasswordActivity extends BaseActivity implements View.OnClickListener {
 
     private CircleView cv;

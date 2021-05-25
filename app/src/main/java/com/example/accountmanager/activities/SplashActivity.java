@@ -8,6 +8,10 @@ import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.utils.SpUtil;
 import com.example.accountmanager.utils.TimeUtil;
 
+/**
+ * @author CharlesLu
+ * @description 启动页
+ */
 public class SplashActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {

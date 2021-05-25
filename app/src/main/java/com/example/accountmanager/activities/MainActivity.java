@@ -27,6 +27,10 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * @author CharlesLu
+ * @description 首页
+ */
 public class MainActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
 
     private TitleBar titleBar;

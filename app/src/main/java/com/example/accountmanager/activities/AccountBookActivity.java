@@ -27,6 +27,7 @@ import java.util.List;
 
 /**
  * @author CharlesLu
+ * @description 每一个类别展示的界面
  */
 public class AccountBookActivity extends BaseActivity {
 
