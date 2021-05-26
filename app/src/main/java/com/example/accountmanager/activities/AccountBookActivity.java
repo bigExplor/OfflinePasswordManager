@@ -143,7 +143,7 @@ public class AccountBookActivity extends BaseActivity {
         }
     }
 
-    private AccountAdapter.OnItemClickListener listener = new AccountAdapter.OnItemClickListener() {
+    private final AccountAdapter.OnItemClickListener listener = new AccountAdapter.OnItemClickListener() {
         @Override
         public void onMode(int position) {
             int mode = accounts.get(position).getMode();
@@ -153,8 +153,7 @@ public class AccountBookActivity extends BaseActivity {
                 if (accounts.get(i).getMode() != accounts.get(i - 1).getMode()) break;
             }
             if (i >= accounts.size()) {
-                if (accounts.get(0).getMode() == 0) isOpenEye = false;
-                else isOpenEye = true;
+                isOpenEye = accounts.get(0).getMode() != 0;
                 setTitleEye();
             }
             setAdapter(accounts);
@@ -184,14 +183,11 @@ public class AccountBookActivity extends BaseActivity {
             String msg = "确定删除名为 " + accounts.get(position).getTitle() + " 的记录吗？该动作不可撤回！";
             SpannableString ss = new SpannableString(msg);
             ss.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.work)), 7, 7+ accounts.get(position).getTitle().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            showConfirm(ss, new OnItemClickListener() {
-                @Override
-                public void onResult(boolean isOk) {
-                    if (isOk) {
-                        accountDao.deleteAccount(accounts.get(position).getId());
-                        setAdapter(getAccountList());
-                        showToast("删除成功！");
-                    }
+            showConfirm(ss, isOk -> {
+                if (isOk) {
+                    accountDao.deleteAccount(accounts.get(position).getId());
+                    setAdapter(getAccountList());
+                    showToast("删除成功！");
                 }
             });
         }
