@@ -7,12 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.accountmanager.base.BaseApplication;
+import com.example.accountmanager.utils.Constants;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
     private static MySQLiteHelper helper = null;
-
-    public static String[] types = new String[]{"游戏", "娱乐", "工作", "效率", "社交", "教育", "工具", "其他", "私密"};
-    private int[] typeIdx = new int[]{1, 10, 20, 30, 40, 50, 60, 100, 200};
 
     private MySQLiteHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -28,11 +26,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 ") ";
         db.execSQL(typeSQL);
 
-        for (int i = 0; i < types.length; ++i) {
-            String name = types[i];
-            String sql = "insert into type (id, name) values (?, ?) ";
-            db.execSQL(sql, new Object[]{typeIdx[i], name});
-        }
+        String sql = "insert into type (id, name, imgId) values (?, ?, ?) ";
+        db.execSQL(sql, new Object[]{Constants.privateId, Constants.privateName, Constants.privateImgId});
 
         String accountSQL = "create table account(\n" +
                 "id integer primary key autoincrement,\n" +

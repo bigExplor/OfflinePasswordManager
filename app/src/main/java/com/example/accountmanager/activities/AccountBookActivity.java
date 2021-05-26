@@ -109,7 +109,9 @@ public class AccountBookActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setAdapter(getAccountList());
+        getAccountList();
+        if (accounts == null) return;
+        setAdapter(accounts);
         isOpenEye = false;
         setTitleEye();
     }
@@ -194,7 +196,8 @@ public class AccountBookActivity extends BaseActivity {
         Type type = typeDao.getTypeById(id);
         if (type == null) {
             finish();
-            return new ArrayList<>();
+            accounts = null;
+            return null;
         }
         accounts = type.getAccounts();
         return accounts;

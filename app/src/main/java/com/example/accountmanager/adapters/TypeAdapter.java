@@ -55,19 +55,19 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         holder.ll_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("私密".equals(type.getName())) {
-                    mActivity.showBiometric(new BaseActivity.OnFingerResultListener() {
-                        @Override
-                        public void onResult(boolean isSuccess) {
+                if (Constants.privateName.equals(type.getName())) {
+                    if (!Constants.hasIntoPrivateSpace) {
+                        mActivity.showBiometric(isSuccess -> {
                             if (isSuccess) {
+                                Constants.hasIntoPrivateSpace = true;
                                 Intent intent = new Intent(mActivity, AccountBookActivity.class);
                                 intent.putExtra("id", type.getId());
                                 intent.putExtra("name", type.getName());
                                 mActivity.startActivity(intent);
                             }
-                        }
-                    });
-                    return;
+                        });
+                        return;
+                    }
                 }
                 Intent intent = new Intent(mActivity, AccountBookActivity.class);
                 intent.putExtra("id", type.getId());

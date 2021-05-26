@@ -108,10 +108,15 @@ public class AddTypeActivity extends BaseActivity {
             }
             if (imgId < 0) {
                 showToast("请选择分类图标");
+                return;
             }
             type.setName(str);
             type.setImgId(imgId);
             if (type.getId() > 0) {
+                if (typeDao.checkTypeByName(type.getName())) {
+                    showToast("分类名重复！");
+                    return;
+                }
                 typeDao.updateType(type);
                 showToast("修改成功！");
                 finish();
