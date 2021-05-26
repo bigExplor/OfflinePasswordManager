@@ -69,19 +69,13 @@ public class AccountBookActivity extends BaseActivity {
             startActivity(intent);
         });
         setTitleEye();
-        titleBar.setRight3(R.drawable.setting, v -> {
-            Intent intent = new Intent(this, AddTypeActivity.class);
-            intent.putExtra("from", "setting");
-            intent.putExtra("id", id);
-            intent.putExtra("name", name);
-            startActivity(intent);
-        });
     }
 
     @Override
     protected void initData() {
         id = getIntent().getIntExtra("id", -1);
         name = getIntent().getStringExtra("name");
+        log_d(name + " " + id);
 //        TODO 从搜索进来，跳到这个记录处
         accountId = getIntent().getIntExtra("accountId", -1);
         if (id <= 0) {
@@ -89,7 +83,17 @@ public class AccountBookActivity extends BaseActivity {
             return;
         }
         titleBar.setText(name);
-        if ("私密".equals(name)) titleBar.setBackground(R.color.black);
+        if (id == Constants.privateId) {
+            titleBar.setBackground(R.color.black);
+        } else {
+            titleBar.setRight3(R.drawable.setting, v -> {
+                Intent intent = new Intent(this, AddTypeActivity.class);
+                intent.putExtra("from", "setting");
+                intent.putExtra("id", id);
+                intent.putExtra("name", name);
+                startActivity(intent);
+            });
+        }
         setAdapter(getAccountList());
     }
 
@@ -206,7 +210,7 @@ public class AccountBookActivity extends BaseActivity {
     @Override
     protected int getStatusColor() {
         int color = R.color.logoRed;
-        if ("私密".equals(name)) {
+        if (id == Constants.privateId) {
             color = R.color.black;
         }
         return color;

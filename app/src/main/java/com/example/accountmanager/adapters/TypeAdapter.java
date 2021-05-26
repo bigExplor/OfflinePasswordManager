@@ -52,28 +52,25 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         holder.tv_size.setText("" + type.getAccounts().size());
         int drawable = R.drawable.shape_size;
         holder.tv_size.setBackgroundDrawable(mActivity.getResources().getDrawable(drawable));
-        holder.ll_container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Constants.privateName.equals(type.getName())) {
-                    if (!Constants.hasIntoPrivateSpace) {
-                        mActivity.showBiometric(isSuccess -> {
-                            if (isSuccess) {
-                                Constants.hasIntoPrivateSpace = true;
-                                Intent intent = new Intent(mActivity, AccountBookActivity.class);
-                                intent.putExtra("id", type.getId());
-                                intent.putExtra("name", type.getName());
-                                mActivity.startActivity(intent);
-                            }
-                        });
-                        return;
-                    }
+        holder.ll_container.setOnClickListener(v -> {
+            if (type.getId() == Constants.privateId) {
+                if (!Constants.hasIntoPrivateSpace) {
+                    mActivity.showBiometric(isSuccess -> {
+                        if (isSuccess) {
+                            Constants.hasIntoPrivateSpace = true;
+                            Intent intent = new Intent(mActivity, AccountBookActivity.class);
+                            intent.putExtra("id", type.getId());
+                            intent.putExtra("name", type.getName());
+                            mActivity.startActivity(intent);
+                        }
+                    });
+                    return;
                 }
-                Intent intent = new Intent(mActivity, AccountBookActivity.class);
-                intent.putExtra("id", type.getId());
-                intent.putExtra("name", type.getName());
-                mActivity.startActivity(intent);
             }
+            Intent intent = new Intent(mActivity, AccountBookActivity.class);
+            intent.putExtra("id", type.getId());
+            intent.putExtra("name", type.getName());
+            mActivity.startActivity(intent);
         });
     }
 
