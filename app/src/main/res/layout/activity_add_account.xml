@@ -21,7 +21,7 @@
         <EditText
             android:id="@+id/et_title"
             style="@style/et_normal"
-            android:drawableLeft="@drawable/title"
+            android:drawableStart="@drawable/title"
             android:singleLine="true"
             android:maxLength="20"
             android:hint="应用/网站名称"/>
@@ -29,7 +29,7 @@
         <EditText
             android:id="@+id/et_username"
             style="@style/et_normal"
-            android:drawableLeft="@drawable/username"
+            android:drawableStart="@drawable/username"
             android:singleLine="true"
             android:maxLength="20"
             android:hint="用户名"/>
@@ -37,7 +37,7 @@
         <EditText
             android:id="@+id/et_mail"
             style="@style/et_normal"
-            android:drawableLeft="@drawable/mail"
+            android:drawableStart="@drawable/mail"
             android:singleLine="true"
             android:maxLength="50"
             android:hint="邮箱"/>
@@ -45,16 +45,17 @@
         <EditText
             android:id="@+id/et_phone"
             style="@style/et_normal"
-            android:drawableLeft="@drawable/phone"
+            android:drawableStart="@drawable/phone"
             android:singleLine="true"
             android:maxLength="20"
             android:inputType="number"
-            android:hint="电话"/>
+            android:hint="电话"
+            tools:ignore="TextFields" />
 
         <TextView
             android:id="@+id/tv_account"
-            android:drawableLeft="@drawable/account"
-            android:drawableRight="@drawable/select"
+            android:drawableStart="@drawable/account"
+            android:drawableEnd="@drawable/select"
             android:textColor="@color/work"
             android:text="与用户名绑定"
             style="@style/et_normal" />
@@ -62,7 +63,7 @@
         <EditText
             android:id="@+id/et_password"
             style="@style/et_normal"
-            android:drawableLeft="@drawable/password_grey"
+            android:drawableStart="@drawable/password_grey"
             android:singleLine="true"
             android:maxLength="20"
             android:hint="密码"/>
@@ -70,7 +71,7 @@
         <EditText
             android:id="@+id/et_url"
             style="@style/et_normal"
-            android:drawableLeft="@drawable/url"
+            android:drawableStart="@drawable/url"
             android:singleLine="true"
             android:maxLength="100"
             android:ellipsize="end"
@@ -79,9 +80,18 @@
         <EditText
             android:id="@+id/et_note"
             style="@style/et_normal"
-            android:drawableLeft="@drawable/note"
+            android:drawableStart="@drawable/note"
             android:maxLength="100"
             android:maxLines="3"
             android:hint="备注"/>
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:drawableStart="@drawable/classify"
+            android:drawableEnd="@drawable/select"
+            android:textColor="@color/work"
+            android:text=""
+            android:visibility="gone"
+            style="@style/et_normal" />
     </LinearLayout>
 </LinearLayout>

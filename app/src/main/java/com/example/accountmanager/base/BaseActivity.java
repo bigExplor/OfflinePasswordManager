@@ -82,7 +82,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                listener.onResult(items[which]);
+                listener.onResult(items[which], which);
             }
         }).create();
         AlertDialog dialog = builder.create();
@@ -216,7 +216,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public interface OnItemSelectedListener {
-        void onResult(String item);
+        void onResult(String item, int positon);
     }
 
     public interface OnKeyBoardStateChangedListener {

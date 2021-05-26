@@ -174,6 +174,7 @@ public class AccountBookActivity extends BaseActivity {
         public void onEdit(int position) {
             Intent intent = new Intent(AccountBookActivity.this, AddAccountActivity.class);
             intent.putExtra("from", "update");
+            intent.putExtra("typeId", id);
             intent.putExtra("accountId", accounts.get(position).getId());
             startActivity(intent);
         }

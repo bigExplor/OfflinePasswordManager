@@ -1,5 +1,6 @@
 package com.example.accountmanager.activities;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,9 +14,12 @@ import androidx.annotation.RequiresApi;
 import com.example.accountmanager.R;
 import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.bean.Account;
+import com.example.accountmanager.bean.Type;
 import com.example.accountmanager.dao.AccountDao;
+import com.example.accountmanager.dao.TypeDao;
 import com.example.accountmanager.ui.TitleBar;
-import com.example.accountmanager.utils.ScreenUtil;
+
+import java.util.List;
 
 /**
  * @author CharlesLu
@@ -24,23 +28,30 @@ import com.example.accountmanager.utils.ScreenUtil;
 public class AddAccountActivity extends BaseActivity implements View.OnFocusChangeListener {
 
     private TitleBar titleBar;
-    private EditText et_title;
-    private EditText et_username;
-    private EditText et_mail;
-    private EditText et_phone;
-    private TextView tv_account;
-    private EditText et_password;
-    private EditText et_url;
-    private EditText et_note;
+    private EditText editTitle;
+    private EditText etUsername;
+    private EditText etMail;
+    private EditText etPhone;
+    private EditText etPassword;
+    private EditText etUrl;
+    private EditText etNote;
+
+    private TextView tvAccount;
+    private TextView tvType;
 
     private String account_type = "用户名";
 
-    private AccountDao accountDao = new AccountDao();
+    private final TypeDao typeDao = new TypeDao();
+    private final AccountDao accountDao = new AccountDao();
+    private int selectedTypeId = -1;
+
+    private List<Type> list;
+
     private int typeId;
     private String from;
     private int accountId;
     private Account account;
-    private LinearLayout ll_container;
+    private LinearLayout llContainer;
 
     @Override
     protected int getLayoutId() {
@@ -50,17 +61,19 @@ public class AddAccountActivity extends BaseActivity implements View.OnFocusChan
     @Override
     protected void initView() {
         titleBar = findViewById(R.id.titleBar);
-        et_title = findViewById(R.id.et_title);
-        et_username = findViewById(R.id.et_username);
-        et_mail = findViewById(R.id.et_mail);
-        et_phone = findViewById(R.id.et_phone);
-        tv_account = findViewById(R.id.tv_account);
-        et_password = findViewById(R.id.et_password);
-        et_url = findViewById(R.id.et_url);
-        et_note = findViewById(R.id.et_note);
-        ll_container = findViewById(R.id.ll_container);
+        editTitle = findViewById(R.id.et_title);
+        etUsername = findViewById(R.id.et_username);
+        etMail = findViewById(R.id.et_mail);
+        etPhone = findViewById(R.id.et_phone);
+        etPassword = findViewById(R.id.et_password);
+        etUrl = findViewById(R.id.et_url);
+        etNote = findViewById(R.id.et_note);
+        tvType = findViewById(R.id.tv_type);
+        tvAccount = findViewById(R.id.tv_account);
+        llContainer = findViewById(R.id.ll_container);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void initListener() {
         from = getIntent().getStringExtra("from");
@@ -71,21 +84,13 @@ public class AddAccountActivity extends BaseActivity implements View.OnFocusChan
             finish();
             return;
         }
-        tv_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showItemListDialog("绑定账号", new String[]{"用户名", "邮箱", "电话"}, new OnItemSelectedListener() {
-                    @Override
-                    public void onResult(String item) {
-                        account_type = item;
-                        tv_account.setText("与" + account_type + "绑定");
-                    }
-                });
-            }
-        });
-        et_password.setOnFocusChangeListener(this);
-        et_url.setOnFocusChangeListener(this);
-        et_note.setOnFocusChangeListener(this);
+        tvAccount.setOnClickListener(v -> showItemListDialog("绑定账号", new String[]{"用户名", "邮箱", "电话"}, (item, position) -> {
+            account_type = item;
+            tvAccount.setText("与" + account_type + "绑定");
+        }));
+        etPassword.setOnFocusChangeListener(this);
+        etUrl.setOnFocusChangeListener(this);
+        etNote.setOnFocusChangeListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -107,20 +112,36 @@ public class AddAccountActivity extends BaseActivity implements View.OnFocusChan
             }
         });
         if ("update".equals(from)) {
+            tvType.setVisibility(View.VISIBLE);
+            Type t = typeDao.getTypeById(typeId);
+            if (t == null) {
+                finish();
+                return;
+            }
+            tvType.setText(t.getName());
             account = accountDao.getAccountById(accountId);
             fillData();
+            list = typeDao.getAllType();
+            tvType.setOnClickListener(v -> {
+                String []typeName = new String[list.size()];
+                for (int i = 0; i < typeName.length; ++i) typeName[i] = list.get(i).getName();
+                showItemListDialog("选择分类", typeName, (item, position) -> {
+                    account.setTypeId(list.get(position).getId());
+                    tvType.setText(item);
+                });
+            });
         }
     }
 
     private void check() {
         if (account == null) account = new Account();
-        String title = et_title.getText().toString().trim();
-        String username = et_username.getText().toString().trim();
-        String mail = et_mail.getText().toString().trim();
-        String phone = et_phone.getText().toString().trim();
-        String password = et_password.getText().toString().trim();
-        String url = et_url.getText().toString().trim();
-        String note = et_note.getText().toString().trim();
+        String title = editTitle.getText().toString().trim();
+        String username = etUsername.getText().toString().trim();
+        String mail = etMail.getText().toString().trim();
+        String phone = etPhone.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+        String url = etUrl.getText().toString().trim();
+        String note = etNote.getText().toString().trim();
         if (!TextUtils.isEmpty(title)) {
             account.setTitle(title);
         } else {
@@ -174,31 +195,31 @@ public class AddAccountActivity extends BaseActivity implements View.OnFocusChan
     }
 
     private void fillData() {
-        et_title.setText(account.getTitle());
+        editTitle.setText(account.getTitle());
         if (!"暂无提供".equals(account.getUsername())) {
-            et_username.setText(account.getUsername());
+            etUsername.setText(account.getUsername());
         }
         if (!"暂无提供".equals(account.getMail())) {
-            et_mail.setText(account.getMail());
+            etMail.setText(account.getMail());
         }
         if (!"暂无提供".equals(account.getPhone())) {
-            et_phone.setText(account.getPhone());
+            etPhone.setText(account.getPhone());
         }
-        et_password.setText(account.getPassword());
+        etPassword.setText(account.getPassword());
         if (!"暂无提供".equals(account.getUrl())) {
-            et_url.setText(account.getUrl());
+            etUrl.setText(account.getUrl());
         }
         if (!"暂无提供".equals(account.getNote())) {
-            et_note.setText(account.getNote());
+            etNote.setText(account.getNote());
         }
         if (account.getAccount().equals(account.getMail())) {
-            tv_account.setText("与邮箱绑定");
+            tvAccount.setText("与邮箱绑定");
             account_type = "邮箱";
         } else if (account.getAccount().equals(account.getPhone())) {
-            tv_account.setText("与电话绑定");
+            tvAccount.setText("与电话绑定");
             account_type = "电话";
         } else {
-            tv_account.setText("与用户名绑定");
+            tvAccount.setText("与用户名绑定");
             account_type = "用户名";
         }
     }
