@@ -37,8 +37,8 @@ public class TypeDao {
     public Type getTypeById(int typeId) {
         db = helper.getWritableDatabase();
         String sql = "select * from type where id = ? ";
-        Type type = null;
         Cursor cursor = db.rawQuery(sql, new String[]{"" + typeId});
+        Type type = null;
         if (cursor.moveToNext()) {
             type = getTypeFromCursor(cursor);
         }
@@ -47,19 +47,21 @@ public class TypeDao {
     }
 
     /* 根据类别名称获取类别信息（精确匹配） */
-    public boolean checkTypeByName(String name) {
+    public Type checkTypeByName(String name) {
         db = helper.getWritableDatabase();
         String sql = "select * from type where name = ? ";
         Cursor cursor = db.rawQuery(sql, new String[]{name});
-        boolean typeExist = cursor.moveToNext();
-        cursor.close();
+        Type type = null;
+        if (cursor.moveToNext()) {
+            type = getTypeFromCursor(cursor);
+        }
         db.close();
-        return typeExist;
+        return type;
     }
 
     /* 添加类别信息 */
     public boolean addType(Type type) {
-        if (checkTypeByName(type.getName())) { // 存在同名类名返回 false
+        if (checkTypeByName(type.getName()) != null) { // 存在同名类名返回 false
             return false;
         }
         db = helper.getWritableDatabase();

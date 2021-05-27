@@ -47,6 +47,8 @@ public class AddTypeActivity extends BaseActivity {
     private final TypeDao typeDao = new TypeDao();
     private final AccountDao accountDao = new AccountDao();
 
+    private int currentId = -1;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_add_type;
@@ -65,14 +67,14 @@ public class AddTypeActivity extends BaseActivity {
     protected void initData() {
         mTitleBar.setText("添加分类");
         String from = getIntent().getStringExtra("from");
+        currentId = getIntent().getIntExtra("id", -1);
         if (!TextUtils.isEmpty(from) && from.equals("setting")) {
-            int id = getIntent().getIntExtra("id", -1);
             String name = getIntent().getStringExtra("name");
             mEtType.setText(name);
             mConfirmBtn.setText("修改");
             mTitleBar.setText("编辑分类");
-            type = typeDao.getTypeById(id);
-            if (id < 0 || TextUtils.isEmpty(name) || type == null) {
+            type = typeDao.getTypeById(currentId);
+            if (currentId < 0 || TextUtils.isEmpty(name) || type == null) {
                 showToast("参数错误");
                 finish();
                 return;
@@ -113,7 +115,8 @@ public class AddTypeActivity extends BaseActivity {
             type.setName(str);
             type.setImgId(imgId);
             if (type.getId() > 0) {
-                if (typeDao.checkTypeByName(type.getName())) {
+                Type t = typeDao.checkTypeByName(type.getName());
+                if (t != null && t.getId() != currentId) {
                     showToast("分类名重复！");
                     return;
                 }
