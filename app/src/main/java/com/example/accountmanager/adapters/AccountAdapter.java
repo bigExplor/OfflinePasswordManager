@@ -1,7 +1,6 @@
 package com.example.accountmanager.adapters;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHolder> {
-    private AccountBookActivity mActivity;
-    private List<Account> accounts = new ArrayList<>();
-    private OnItemClickListener listener;
+    private final OnItemClickListener listener;
+    private final AccountBookActivity mActivity;
+    private final List<Account> accounts = new ArrayList<>();
 
     public AccountAdapter(AccountBookActivity mActivity, List<Account> accounts, OnItemClickListener listener) {
         this.mActivity = mActivity;
@@ -37,7 +36,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = null;
+        View view;
         if (viewType == 0) { // 精简模式
             view = LayoutInflater.from(mActivity).inflate(R.layout.layout_account_item, parent, false);
         } else { // 完全模式
@@ -52,7 +51,11 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
         String title = account.getTitle();
         if (title.length() > 8) title = title.substring(0, 8) + "...";
         holder.tv_title.setText(title);
-        holder.tv_username.setText(account.getUsername());
+        String username = account.getUsername();
+        if ("暂无提供".equals(username)) {
+            username = "";
+        }
+        holder.tv_username.setText(username);
         holder.tv_account.setText(account.getAccount());
         holder.tv_password.setText(account.getPassword());
 
@@ -95,7 +98,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
         return accounts.get(position).getMode();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_title;
         TextView tv_username;
         TextView tv_account;

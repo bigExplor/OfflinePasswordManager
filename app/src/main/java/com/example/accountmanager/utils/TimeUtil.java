@@ -15,6 +15,7 @@ public class TimeUtil {
         return utils;
     }
 
+    /* 延时执行 */
     public void postDelayed(Runnable runnable, long delay) {
         handler.postDelayed(runnable, delay);
     }

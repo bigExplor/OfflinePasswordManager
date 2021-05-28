@@ -1,5 +1,6 @@
 package com.example.accountmanager.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 
@@ -12,6 +13,7 @@ import java.util.concurrent.Executor;
 
 public class BiometricUtil {
     private Context context;
+    @SuppressLint("StaticFieldLeak")
     private static BiometricUtil biometricUtil;
 
     private BiometricUtil(Context context) {
@@ -50,14 +52,9 @@ public class BiometricUtil {
         }
     }
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
-    private Executor executor = new Executor() {
-        @Override
-        public void execute(Runnable command) {
-            handler.post(command);
-        }
-    };
+    private final Executor executor = handler::post;
 
     public void showBiometricPrompt(final OnResultListener listener) {
         BiometricPrompt.PromptInfo promptInfo =

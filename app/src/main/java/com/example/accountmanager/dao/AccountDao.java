@@ -9,13 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountDao {
-    private final MySQLiteHelper helper;
     private SQLiteDatabase db = null;
+    private final MySQLiteHelper helper;
 
     public AccountDao() {
         helper = MySQLiteHelper.getInstance();
     }
 
+    /* 添加账号信息 */
     public void addAccount(Account account) {
         db = helper.getWritableDatabase();
         String sql = "insert into account (title, username, mail, phone, account, password, url, note, type) values (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
@@ -23,6 +24,7 @@ public class AccountDao {
         db.close();
     }
 
+    /* 删除账号信息 */
     public void deleteAccount(int id) {
         db = helper.getWritableDatabase();
         String sql = "delete from account where id = ? ";
@@ -30,6 +32,7 @@ public class AccountDao {
         db.close();
     }
 
+    /* 更新账号信息 */
     public void updateAccount(Account account) {
         db = helper.getWritableDatabase();
         String sql = "update account set title = ?, username = ?, mail = ?, phone = ?, account = ?, password = ?, url = ?, note = ?, type = ? where id = ? ";
@@ -37,6 +40,7 @@ public class AccountDao {
         db.close();
     }
 
+    /* 根据id获取账号信息 */
     public Account getAccountById(int accountId) {
         db = helper.getWritableDatabase();
         Account account = null;
@@ -49,6 +53,7 @@ public class AccountDao {
         return account;
     }
 
+    /* 根据类型获取账号信息 */
     public List<Account> getAccountByType(int typeId) {
         db = helper.getWritableDatabase();
         String sql = "select * from account where type = ? ";
@@ -61,6 +66,7 @@ public class AccountDao {
         return list;
     }
 
+    /* 根据名称模糊匹配账号信息 */
     public List<Account> getAccountByTitle(String title) {
         db = helper.getWritableDatabase();
         String sql = "select * from account where title like ? order by type";
@@ -73,6 +79,7 @@ public class AccountDao {
         return list;
     }
 
+    /* 获取所有账号信息 */
     public List<Account> getAllAccounts() {
         db = helper.getWritableDatabase();
         String sql = "select * from account ";
@@ -85,6 +92,7 @@ public class AccountDao {
         return list;
     }
 
+    /* 从cursor中解析账号信息 */
     private Account getAccountFromCursor(Cursor cursor) {
         Account account = new Account();
         account.setId(cursor.getInt(cursor.getColumnIndex("id")));

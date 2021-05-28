@@ -30,9 +30,9 @@ public class CircleView extends View {
         int x = width / 2 - 45 - (circleNum / 2 - 1) * 90;
         for (int i = 0; i < circleNum; i++) {
             if (i < choosen) {
-                canvas.drawCircle(x, height / 2, 18, solidPaint);
+                canvas.drawCircle(x, height / 2f, 18, solidPaint);
             } else {
-                canvas.drawCircle(x, height / 2, 16, paint);
+                canvas.drawCircle(x, height / 2f, 16, paint);
             }
             x += 90;
         }
@@ -62,7 +62,7 @@ public class CircleView extends View {
         this.paintColor = paintColor;
     }
 
-    public void setChoosen(int num) {
+    public void setChosen(int num) {
         if (num > circleNum) return;
         choosen = num;
         invalidate();

@@ -6,26 +6,25 @@ import android.text.TextUtils;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
 import com.example.accountmanager.R;
-import com.example.accountmanager.base.BaseActivity;
+import com.example.accountmanager.base.BaseActivity1;
 import com.example.accountmanager.bean.Account;
 import com.example.accountmanager.bean.Type;
-import com.example.accountmanager.dao.AccountDao;
-import com.example.accountmanager.dao.TypeDao;
+import com.example.accountmanager.presenter.AddAccountActivityPresenter;
 import com.example.accountmanager.ui.TitleBar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author CharlesLu
  * @description 添加账号的界面
  */
-public class AddAccountActivity extends BaseActivity implements View.OnFocusChangeListener {
+public class AddAccountActivity extends BaseActivity1<AddAccountActivityPresenter> {
 
     private TitleBar titleBar;
     private EditText editTitle;
@@ -36,26 +35,29 @@ public class AddAccountActivity extends BaseActivity implements View.OnFocusChan
     private EditText etUrl;
     private EditText etNote;
 
-    private TextView tvAccount;
     private TextView tvType;
-
-    private String account_type = "用户名";
-
-    private final TypeDao typeDao = new TypeDao();
-    private final AccountDao accountDao = new AccountDao();
-    private int selectedTypeId = -1;
-
-    private List<Type> list;
+    private TextView tvAccount;
 
     private int typeId;
-    private String from;
     private int accountId;
-    private Account account;
-    private LinearLayout llContainer;
+
+    private String from;
+    public String account_type = "用户名";
+
+    public Type currentType = new Type();
+    public Account currentAccount = new Account();
+
+    public String []typeName;
+    public List<Type> allTypeList = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_add_account;
+    }
+
+    @Override
+    protected AddAccountActivityPresenter getPresenter() {
+        return new AddAccountActivityPresenter();
     }
 
     @Override
@@ -70,7 +72,6 @@ public class AddAccountActivity extends BaseActivity implements View.OnFocusChan
         etNote = findViewById(R.id.et_note);
         tvType = findViewById(R.id.tv_type);
         tvAccount = findViewById(R.id.tv_account);
-        llContainer = findViewById(R.id.ll_container);
     }
 
     @SuppressLint("SetTextI18n")
@@ -79,18 +80,10 @@ public class AddAccountActivity extends BaseActivity implements View.OnFocusChan
         from = getIntent().getStringExtra("from");
         typeId = getIntent().getIntExtra("typeId", -1);
         accountId = getIntent().getIntExtra("accountId", -1);
-        if (("add".equals(from) && typeId <= 0) || ("update".equals(from) && accountId <= 0)) {
-            showToast("获取分类信息失败");
-            finish();
-            return;
-        }
         tvAccount.setOnClickListener(v -> showItemListDialog("绑定账号", new String[]{"用户名", "邮箱", "电话"}, (item, position) -> {
             account_type = item;
             tvAccount.setText("与" + account_type + "绑定");
         }));
-        etPassword.setOnFocusChangeListener(this);
-        etUrl.setOnFocusChangeListener(this);
-        etNote.setOnFocusChangeListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -99,123 +92,64 @@ public class AddAccountActivity extends BaseActivity implements View.OnFocusChan
         String title = "add".equals(from)? "添加账号信息": "修改账号信息";
         titleBar.setText(title);
         titleBar.setZ(100f);
-        titleBar.setLeft(R.drawable.left, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        titleBar.setRight(R.drawable.save, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                check();
-            }
-        });
+        titleBar.setLeft(R.drawable.left, v -> finish());
+        titleBar.setRight(R.drawable.save, v -> check());
+        p.getTypeAndAccount(typeId, accountId);
+        if (currentType == null || ("update".equals(from) && currentAccount.getId() <= 0)) {
+            showToast("获取分类信息失败！");
+            finish();
+            return;
+        } else {
+            currentAccount.setType(currentType);
+            currentAccount.setTypeId(currentType.getId());
+        }
         if ("update".equals(from)) {
-            tvType.setVisibility(View.VISIBLE);
-            Type t = typeDao.getTypeById(typeId);
-            if (t == null) {
-                finish();
-                return;
-            }
-            tvType.setText(t.getName());
-            account = accountDao.getAccountById(accountId);
             fillData();
-            list = typeDao.getAllType();
-            tvType.setOnClickListener(v -> {
-                String []typeName = new String[list.size()];
-                for (int i = 0; i < typeName.length; ++i) typeName[i] = list.get(i).getName();
-                showItemListDialog("选择分类", typeName, (item, position) -> {
-                    account.setTypeId(list.get(position).getId());
-                    tvType.setText(item);
-                });
-            });
+            tvType.setVisibility(View.VISIBLE);
+            tvType.setText(currentType.getName());
+            tvType.setOnClickListener(v -> showItemListDialog("选择分类", typeName, (item, position) -> {
+                currentAccount.setTypeId(allTypeList.get(position).getId());
+                tvType.setText(item);
+            }));
         }
     }
 
     private void check() {
-        if (account == null) account = new Account();
-        String title = editTitle.getText().toString().trim();
-        String username = etUsername.getText().toString().trim();
-        String mail = etMail.getText().toString().trim();
-        String phone = etPhone.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-        String url = etUrl.getText().toString().trim();
-        String note = etNote.getText().toString().trim();
-        if (!TextUtils.isEmpty(title)) {
-            account.setTitle(title);
-        } else {
-            showToast("名称不为空");
-            return;
-        }
-        if (!TextUtils.isEmpty(password)) {
-            account.setPassword(password);
-        } else {
-            showToast("密码不为空");
-            return;
-        }
-        if (TextUtils.isEmpty(url) || URLUtil.isHttpUrl(url) || URLUtil.isHttpsUrl(url)) {
-            account.setUrl(url);
-        } else {
-            showToast("网址格式不正确");
-            return;
-        }
-        if ("add".equals(from))  account.setTypeId(typeId);
-        account.setUsername(username);
-        account.setMail(mail);
-        account.setPhone(phone);
-        account.setNote(note);
-        if ("用户名".equals(account_type)) {
-            if (TextUtils.isEmpty(username)) {
-                showToast("与账号绑定的用户名不可为空");
-                return;
-            }
-            account.setAccount(username);
-        } else if ("邮箱".equals(account_type)) {
-            if (TextUtils.isEmpty(mail)) {
-                showToast("与账号绑定的邮箱不可为空");
-                return;
-            }
-            account.setAccount(mail);
-        } else {
-            if (TextUtils.isEmpty(phone)) {
-                showToast("与账号绑定的电话不可为空");
-                return;
-            }
-            account.setAccount(phone);
-        }
-        if ("add".equals(from)) accountDao.addAccount(account);
-        else accountDao.updateAccount(account);
-        finish();
+        currentAccount.setUrl(etUrl.getText().toString().trim());
+        currentAccount.setMail(etMail.getText().toString().trim());
+        currentAccount.setNote(etNote.getText().toString().trim());
+        currentAccount.setPhone(etPhone.getText().toString().trim());
+        currentAccount.setTitle(editTitle.getText().toString().trim());
+        currentAccount.setUsername(etUsername.getText().toString().trim());
+        currentAccount.setPassword(etPassword.getText().toString().trim());
+        p.check();
     }
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-
-    }
-
+    /* 填充初始账号信息 */
     private void fillData() {
-        editTitle.setText(account.getTitle());
-        if (!"暂无提供".equals(account.getUsername())) {
-            etUsername.setText(account.getUsername());
+        currentAccount.removeInfo();
+        editTitle.setText(currentAccount.getTitle());
+        etPassword.setText(currentAccount.getPassword());
+
+        if (!TextUtils.isEmpty(currentAccount.getUrl())) {
+            etUrl.setText(currentAccount.getUrl());
         }
-        if (!"暂无提供".equals(account.getMail())) {
-            etMail.setText(account.getMail());
+        if (!TextUtils.isEmpty(currentAccount.getNote())) {
+            etNote.setText(currentAccount.getNote());
         }
-        if (!"暂无提供".equals(account.getPhone())) {
-            etPhone.setText(account.getPhone());
+        if (!TextUtils.isEmpty(currentAccount.getMail())) {
+            etMail.setText(currentAccount.getMail());
         }
-        etPassword.setText(account.getPassword());
-        if (!"暂无提供".equals(account.getUrl())) {
-            etUrl.setText(account.getUrl());
+        if (!TextUtils.isEmpty(currentAccount.getPhone())) {
+            etPhone.setText(currentAccount.getPhone());
         }
-        if (!"暂无提供".equals(account.getNote())) {
-            etNote.setText(account.getNote());
+        if (!TextUtils.isEmpty(currentAccount.getUsername())) {
+            etUsername.setText(currentAccount.getUsername());
         }
-        if (account.getAccount().equals(account.getMail())) {
+        if (currentAccount.getAccount().equals(currentAccount.getMail())) {
             tvAccount.setText("与邮箱绑定");
             account_type = "邮箱";
-        } else if (account.getAccount().equals(account.getPhone())) {
+        } else if (currentAccount.getAccount().equals(currentAccount.getPhone())) {
             tvAccount.setText("与电话绑定");
             account_type = "电话";
         } else {

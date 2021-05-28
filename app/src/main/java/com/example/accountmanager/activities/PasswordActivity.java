@@ -1,14 +1,15 @@
 package com.example.accountmanager.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.accountmanager.R;
-import com.example.accountmanager.base.BaseActivity;
+import com.example.accountmanager.base.BaseActivity1;
+import com.example.accountmanager.presenter.PasswordActivityPresenter;
 import com.example.accountmanager.ui.CircleView;
-import com.example.accountmanager.utils.BiometricUtil;
 import com.example.accountmanager.utils.SpUtil;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
  * @author CharlesLu
  * @description 启动时输入密码的界面
  */
-public class PasswordActivity extends BaseActivity implements View.OnClickListener {
+public class PasswordActivity extends BaseActivity1<PasswordActivityPresenter> implements View.OnClickListener {
 
     private CircleView cv;
     private ImageView iv_finger;
@@ -34,11 +35,14 @@ public class PasswordActivity extends BaseActivity implements View.OnClickListen
     private TextView tv_8;
     private TextView tv_9;
 
-    private List<Integer> pwd = new ArrayList<>();
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_password;
+    }
+
+    @Override
+    protected PasswordActivityPresenter getPresenter() {
+        return new PasswordActivityPresenter();
     }
 
     @Override
@@ -83,83 +87,52 @@ public class PasswordActivity extends BaseActivity implements View.OnClickListen
         iv_finger.setOnClickListener(this);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_0:
-                if (pwd.size() >= 4) return;
-                pwd.add(0);
+                p.onClick(0, "");
                 break;
             case R.id.tv_1:
-                if (pwd.size() >= 4) return;
-                pwd.add(1);
+                p.onClick(1, "");
                 break;
             case R.id.tv_2:
-                if (pwd.size() >= 4) return;
-                pwd.add(2);
+                p.onClick(2, "");
                 break;
             case R.id.tv_3:
-                if (pwd.size() >= 4) return;
-                pwd.add(3);
+                p.onClick(3, "");
                 break;
             case R.id.tv_4:
-                if (pwd.size() >= 4) return;
-                pwd.add(4);
+                p.onClick(4, "");
                 break;
             case R.id.tv_5:
-                if (pwd.size() >= 4) return;
-                pwd.add(5);
+                p.onClick(5, "");
                 break;
             case R.id.tv_6:
-                if (pwd.size() >= 4) return;
-                pwd.add(6);
+                p.onClick(6, "");
                 break;
             case R.id.tv_7:
-                if (pwd.size() >= 4) return;
-                pwd.add(7);
+                p.onClick(7, "");
                 break;
             case R.id.tv_8:
-                if (pwd.size() >= 4) return;
-                pwd.add(8);
+                p.onClick(8, "");
                 break;
             case R.id.tv_9:
-                if (pwd.size() >= 4) return;
-                pwd.add(9);
+                p.onClick(9, "");
                 break;
             case R.id.iv_delete:
-                if (pwd.size() <= 0) return;
-                pwd.remove(pwd.size() - 1);
+                p.onClick(10, "delete");
                 break;
             case R.id.iv_finger:
-                showBiometric(new OnFingerResultListener() {
-                    @Override
-                    public void onResult(boolean isSuccess) {
-                        if (isSuccess) {
-                            Intent intent = new Intent(PasswordActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-                });
+                p.onClick(11, "finger");
                 break;
-        }
-        if (v.getId() != R.id.iv_finger) {
-            cv.setChoosen(pwd.size());
-            if (pwd.size() == 4) check();
         }
     }
 
-    private void check() {
-        String ans = "";
-        for (Integer i: pwd) ans += i;
-        if (ans.equals(SpUtil.getInstance().getString("password"))) {
-            showToast("验证通过");
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
-        showToast("密码错误");
+    /* 设置小圆点指示器选中的个数 */
+    public void setChosen(int num) {
+        cv.setChosen(num);
     }
 
     @Override

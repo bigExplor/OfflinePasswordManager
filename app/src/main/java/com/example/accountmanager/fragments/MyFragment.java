@@ -96,10 +96,10 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 else mActivity.showToast("开启指纹解锁");
                 break;
             case R.id.iv_cpy_str:
-                mActivity.cpyStr();
+                mActivity.getP().cpyStr();
                 break;
             case R.id.iv_cpy_file:
-                mActivity.cpyFile();
+                mActivity.getP().cpyFile();
                 break;
             case R.id.iv_why_str:
                 msg = new SpannableString("仅当数据不超过 5 条时，字符备份才会起作用。大批量数据的备份请使用 文件备份");

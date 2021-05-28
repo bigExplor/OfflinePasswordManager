@@ -20,9 +20,9 @@ import java.util.List;
  * @date 2021/5/25 15:14
  * @description
  */
-public class ChooseTypeImgAdapter extends RecyclerView.Adapter<ViewHolder> {
-    private List<TypeImg> list;
+public class ChooseTypeImgAdapter extends RecyclerView.Adapter<ChooseTypeImgAdapter.ViewHolder> {
     private Context mContext;
+    private final List<TypeImg> list;
 
     public ChooseTypeImgAdapter(List<TypeImg> list) {
         this.list = list;
@@ -59,17 +59,17 @@ public class ChooseTypeImgAdapter extends RecyclerView.Adapter<ViewHolder> {
     public int getItemCount() {
         return list.size();
     }
-}
 
-class ViewHolder extends RecyclerView.ViewHolder {
-    public ImageView ivCover;
-    public ImageView ivChosen;
-    public RelativeLayout rlContainer;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView ivCover;
+        public ImageView ivChosen;
+        public RelativeLayout rlContainer;
 
-    public ViewHolder(@NonNull View itemView) {
-        super(itemView);
-        ivCover = itemView.findViewById(R.id.iv_cover);
-        ivChosen = itemView.findViewById(R.id.iv_chosen);
-        rlContainer = itemView.findViewById(R.id.rl_container);
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ivCover = itemView.findViewById(R.id.iv_cover);
+            ivChosen = itemView.findViewById(R.id.iv_chosen);
+            rlContainer = itemView.findViewById(R.id.rl_container);
+        }
     }
 }

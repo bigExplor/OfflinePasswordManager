@@ -19,7 +19,7 @@ public class TitleBar extends RelativeLayout {
     private TextView tv_title;
     private RelativeLayout rl_container;
 
-    private Context context;
+    private final Context context;
 
     public TitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);

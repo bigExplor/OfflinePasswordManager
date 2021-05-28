@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.ViewHolder> {
-    private SearchActivity mActivity;
-    private List<Account> accountList;
-    private OnItemClickListener listener;
-    private LayoutInflater layoutInflater;
+    private final SearchActivity mActivity;
+    private final List<Account> accountList;
+    private final OnItemClickListener listener;
+    private final LayoutInflater layoutInflater;
 
     public SearchItemAdapter(SearchActivity mActivity, List<Account> accountList, OnItemClickListener listener) {
         this.mActivity = mActivity;
@@ -64,6 +64,7 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
         return accountList.size();
     }
 
+    /* 复制文本 */
     private void copy(String msg) {
         if (TextUtils.isEmpty(msg) || "暂无提供".equals(msg)) {
             mActivity.showToast("该字段为空，不可复制");
@@ -73,7 +74,7 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemAdapter.Vi
         mActivity.showToast("复制成功");
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_title;
         TextView tv_tag;
         TextView tv_account;

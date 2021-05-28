@@ -1,5 +1,6 @@
 package com.example.accountmanager.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,9 +21,8 @@ import com.example.accountmanager.utils.ScreenUtil;
 
 public class LoadingDialog extends Dialog {
     private View view;
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private ImageView iv_loading;
+    private final Context context;
+    private final LayoutInflater layoutInflater;
     private TextView tv_loadingTip;
 
     public LoadingDialog(@NonNull Context context, boolean cancelable) {
@@ -35,9 +35,10 @@ public class LoadingDialog extends Dialog {
         setCanceledOnTouchOutside(cancelable);
     }
 
+    @SuppressLint("InflateParams")
     private void initView() {
         view = layoutInflater.inflate(R.layout.layout_loading_dialog, null);
-        iv_loading = view.findViewById(R.id.iv_loading);
+        ImageView iv_loading = view.findViewById(R.id.iv_loading);
         tv_loadingTip = view.findViewById(R.id.tv_loadingTip);
         Glide.with(context).load(R.drawable.loading).into(iv_loading);
     }

@@ -52,10 +52,10 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
         hasPwd = !TextUtils.isEmpty(SpUtil.getInstance().getString("password"));
         if (hasPwd) {
             btn.setText("确认关闭");
-            btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_btn_nagtive));
+            btn.setBackground(getResources().getDrawable(R.drawable.shape_btn_nagtive));
         } else {
             btn.setText("确定");
-            btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_btn_positive));
+            btn.setBackground(getResources().getDrawable(R.drawable.shape_btn_positive));
         }
     }
 

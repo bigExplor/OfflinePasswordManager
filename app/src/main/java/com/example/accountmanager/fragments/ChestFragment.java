@@ -40,14 +40,11 @@ public class ChestFragment extends Fragment {
     }
 
     private void initListener() {
-        btn_run.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String key = et_key.getText().toString();
-                if (TextUtils.isEmpty(key)) return;
-                boolean success = mActivity.parse(key);
-                if (success) et_key.setText("");
-            }
+        btn_run.setOnClickListener(v -> {
+            String key = et_key.getText().toString();
+            if (TextUtils.isEmpty(key)) return;
+            boolean success = mActivity.getP().parse(key);
+            if (success) et_key.setText("");
         });
     }
 

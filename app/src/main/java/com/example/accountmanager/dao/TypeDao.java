@@ -13,11 +13,11 @@ import java.util.List;
 public class TypeDao {
     private final MySQLiteHelper helper;
     private SQLiteDatabase db = null;
-    private final AccountDao dao;
+    private final AccountDao accountDao;
 
     public TypeDao() {
         helper = MySQLiteHelper.getInstance();
-        dao = new AccountDao();
+        accountDao = new AccountDao();
     }
 
     /* 获取所有类别信息 */
@@ -60,15 +60,11 @@ public class TypeDao {
     }
 
     /* 添加类别信息 */
-    public boolean addType(Type type) {
-        if (checkTypeByName(type.getName()) != null) { // 存在同名类名返回 false
-            return false;
-        }
+    public void addType(Type type) {
         db = helper.getWritableDatabase();
         String sql = "insert into type (name, imgId) values (?, ?) ";
         db.execSQL(sql, new String[]{type.getName(), "" + type.getImgId()});
         db.close();
-        return true;
     }
 
     /* 删除类别信息 */
@@ -87,6 +83,7 @@ public class TypeDao {
         db.close();
     }
 
+    /* 从cursor中解析类别信息 */
     private Type getTypeFromCursor(Cursor cursor) {
         Type type = new Type();
         type.setId(cursor.getInt(cursor.getColumnIndex("id")));
@@ -94,7 +91,7 @@ public class TypeDao {
         int imgId = cursor.getInt(cursor.getColumnIndex("imgId"));
         if (imgId <= 0) imgId = R.drawable.others_cover;
         type.setImgId(imgId);
-        List<Account> accounts = dao.getAccountByType(type.getId());
+        List<Account> accounts = accountDao.getAccountByType(type.getId());
         type.setAccounts(accounts);
         for (Account account: accounts) {
             account.setType(type);

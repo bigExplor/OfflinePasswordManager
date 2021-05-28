@@ -117,6 +117,7 @@ public class Account {
         if (TextUtils.isEmpty(phone)) phone = "暂无提供";
         if (TextUtils.isEmpty(note)) note = "暂无提供";
         if (TextUtils.isEmpty(url)) url = "暂无提供";
+        if (TextUtils.isEmpty(username)) username = "暂无提供";
     }
 
     public void removeInfo() {
@@ -124,6 +125,7 @@ public class Account {
         if ("暂无提供".equals(phone)) phone = "";
         if ("暂无提供".equals(note)) note = "";
         if ("暂无提供".equals(url)) url = "";
+        if ("暂无提供".equals(username)) username = "";
     }
 
     @Override

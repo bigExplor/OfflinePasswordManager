@@ -1,5 +1,6 @@
 package com.example.accountmanager.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -7,6 +8,7 @@ import com.example.accountmanager.base.BaseApplication;
 
 public class SpUtil {
     private Context mContext;
+    @SuppressLint("StaticFieldLeak")
     private static SpUtil instance;
     private String spName = "Configuration";
     private SharedPreferences sp;

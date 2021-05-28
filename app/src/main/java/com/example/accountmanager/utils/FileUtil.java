@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class FileUtil {
+    /* 获取默认的文件存储路径 */
     public static String getFilePath(Context context, String fileName) throws IOException {
         String filePath = context.getFilesDir() + File.separator + fileName;
         File file = new File(filePath);
@@ -30,6 +31,7 @@ public class FileUtil {
         return filePath;
     }
 
+    /* 写内容进文件 */
     public static boolean writeToFile(String path, String str, boolean append) throws IOException {
         File file = new File(path);
         if (!file.exists()) return false;
@@ -40,8 +42,9 @@ public class FileUtil {
         return true;
     }
 
+    /* 分享本地文件 */
     public static String share(Context context, String path) {
-        String mimeType = "";
+        String mimeType;
         if(TextUtils.isEmpty(path)) return "文件不存在";
         File file = new File(path);
         mimeType = getMimeType(file.getAbsolutePath());
@@ -66,7 +69,7 @@ public class FileUtil {
         return "获取分享方式失败";
     }
 
-    // 调用系统功能获取文件的mimeType
+    /* 调用系统功能获取文件的mimeType */
     private static String getMimeType(String path) {
         String extension = MimeTypeMap.getFileExtensionFromUrl(path);
         String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
@@ -76,7 +79,7 @@ public class FileUtil {
         return mimeType;
     }
 
-    // 判断是否有应用支持分享该类型的文件
+    /* 判断是否有应用支持分享该类型的文件 */
     private static boolean hasApplication(Context context, Intent intent) {
         PackageManager packageManager = context.getPackageManager();
         List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);

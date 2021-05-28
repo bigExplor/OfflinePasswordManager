@@ -20,18 +20,15 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        TimeUtil.getInstance().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = null;
-                if (!TextUtils.isEmpty(SpUtil.getInstance().getString("password"))) {
-                    intent = new Intent(SplashActivity.this, PasswordActivity.class);
-                } else {
-                    intent = new Intent(SplashActivity.this, MainActivity.class);
-                }
-                startActivity(intent);
-                finish();
+        TimeUtil.getInstance().postDelayed(() -> {
+            Intent intent;
+            if (!TextUtils.isEmpty(SpUtil.getInstance().getString("password"))) {
+                intent = new Intent(SplashActivity.this, PasswordActivity.class);
+            } else {
+                intent = new Intent(SplashActivity.this, MainActivity.class);
             }
+            startActivity(intent);
+            finish();
         }, 1000);
     }
 

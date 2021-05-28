@@ -1,5 +1,6 @@
 package com.example.accountmanager.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -10,29 +11,19 @@ import android.widget.RadioButton;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.accountmanager.R;
-import com.example.accountmanager.base.BaseActivity;
-import com.example.accountmanager.bean.Account;
-import com.example.accountmanager.dao.AccountDao;
+import com.example.accountmanager.base.BaseActivity1;
 import com.example.accountmanager.fragments.ChestFragment;
 import com.example.accountmanager.fragments.HomeFragment;
 import com.example.accountmanager.fragments.MyFragment;
+import com.example.accountmanager.presenter.MainActivityPresenter;
 import com.example.accountmanager.ui.TitleBar;
-import com.example.accountmanager.utils.FileUtil;
-import com.example.accountmanager.utils.StringUtil;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-import java.util.List;
+import com.example.accountmanager.utils.TimeUtil;
 
 /**
  * @author CharlesLu
  * @description 首页
  */
-public class MainActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends BaseActivity1<MainActivityPresenter> implements CompoundButton.OnCheckedChangeListener {
 
     private TitleBar titleBar;
     private RadioButton rb_home;
@@ -43,26 +34,36 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     private HomeFragment homeFragment;
     private ChestFragment chestFragment;
 
-    private final AccountDao accountDao = new AccountDao();
-
     private boolean isBack = false;
     private final Handler handler = new Handler();
 
-    private final Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
+    private final View.OnClickListener listener = new View.OnClickListener() {
         @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            return f.getName().equals("type");
+        public void onClick(View v) {
+            RadioButton rb = (RadioButton)v;
+            rb_my.setChecked(false);
+            rb_my.setTextColor(getResources().getColor(R.color.grey_no_choose));
+            rb_home.setChecked(false);
+            rb_home.setTextColor(getResources().getColor(R.color.grey_no_choose));
+            rb_chest.setChecked(false);
+            rb_chest.setTextColor(getResources().getColor(R.color.grey_no_choose));
+            rb.setChecked(true);
+            rb.setTextColor(getResources().getColor(R.color.logoRed));
         }
-
-        @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return false;
-        }
-    }).create();
+    };
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    protected MainActivityPresenter getPresenter() {
+        return new MainActivityPresenter();
+    }
+
+    public MainActivityPresenter getP() {
+        return p;
     }
 
     @Override
@@ -100,28 +101,16 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         switchFragment(HomeFragment.class.getSimpleName());
     }
 
-    private View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            RadioButton rb = (RadioButton)v;
-            rb_my.setChecked(false);
-            rb_my.setTextColor(getResources().getColor(R.color.grey_no_choose));
-            rb_home.setChecked(false);
-            rb_home.setTextColor(getResources().getColor(R.color.grey_no_choose));
-            rb_chest.setChecked(false);
-            rb_chest.setTextColor(getResources().getColor(R.color.grey_no_choose));
-            rb.setChecked(true);
-            rb.setTextColor(getResources().getColor(R.color.logoRed));
-        }
-    };
-
+    /* 设置tab栏图片的大小 */
     private void resizeDrawable(RadioButton rb) {
         Drawable[] drawable = rb.getCompoundDrawables();
         drawable[1].setBounds(0, 0, 65, 65);
         rb.setCompoundDrawables(drawable[0], drawable[1], drawable[2], drawable[3]);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
+    /* 点击tab切换界面 */
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
             switch (buttonView.getId()) {
@@ -157,14 +146,12 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         }
         isBack = true;
         showToast("再次点击退出应用");
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                isBack = false;
-            }
+        TimeUtil.getInstance().postDelayed(() -> {
+            isBack = false;
         }, 1500);
     }
 
+    /* 切换 fragment */
     private void switchFragment(String name) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideAllFragment(transaction);
@@ -198,6 +185,7 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         transaction.commit();
     }
 
+    /* 隐藏所有fragment */
     private void hideAllFragment(FragmentTransaction transaction) {
         if (myFragment != null) {
             transaction.hide(myFragment);
@@ -208,58 +196,5 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         if (chestFragment != null) {
             transaction.hide(chestFragment);
         }
-    }
-
-    public void cpyStr() {
-        List<Account> accountList = accountDao.getAllAccounts();
-        if (accountList.size() == 0) {
-            showToast("请先添加账号信息");
-            return;
-        }
-//        if (accountList.size() > 5) {
-//            showToast("账号条目过多，请使用文件备份");
-//            return;
-//        }
-        copy(StringUtil.encode(gson.toJson(accountList)));
-        showToast("备份字符串复制成功！");
-    }
-
-    public void cpyFile() {
-        List<Account> accountList = accountDao.getAllAccounts();
-        if (accountList.size() == 0) {
-            showToast("请先添加账号信息");
-            return;
-        }
-        boolean success = false;
-        String filePath = "";
-        try {
-            filePath = FileUtil.getFilePath(this, "accounts.txt");
-            success = FileUtil.writeToFile(filePath, StringUtil.encode(gson.toJson(accountList)), false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (!success) {
-            showToast("备份失败");
-            return;
-        }
-        showToast(FileUtil.share(this, filePath));
-    }
-
-    public boolean parse(String key) {
-        List<Account> accountList = null;
-        try {
-            accountList = gson.fromJson(StringUtil.decode(key), new TypeToken<List<Account>>(){}.getType());
-        } catch (Exception e) {
-            showToast("密钥错误");
-            return false;
-        }
-        showLoading(false);
-        for (Account account: accountList) {
-            account.removeInfo();
-            accountDao.addAccount(account);
-        }
-        hideLoading();
-        showToast("导入完成");
-        return true;
     }
 }
