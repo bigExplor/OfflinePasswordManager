@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.example.accountmanager.R;
 import com.example.accountmanager.base.BaseActivity;
+import com.example.accountmanager.presenter.BasePresenter;
 import com.example.accountmanager.utils.SpUtil;
 import com.example.accountmanager.utils.TimeUtil;
 
@@ -16,6 +17,11 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_splash;
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return null;
     }
 
     @Override

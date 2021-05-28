@@ -1,25 +1,21 @@
 package com.example.accountmanager.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.accountmanager.R;
-import com.example.accountmanager.base.BaseActivity1;
+import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.presenter.PasswordActivityPresenter;
 import com.example.accountmanager.ui.CircleView;
 import com.example.accountmanager.utils.SpUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author CharlesLu
  * @description 启动时输入密码的界面
  */
-public class PasswordActivity extends BaseActivity1<PasswordActivityPresenter> implements View.OnClickListener {
+public class PasswordActivity extends BaseActivity<PasswordActivityPresenter> implements View.OnClickListener {
 
     private CircleView cv;
     private ImageView iv_finger;

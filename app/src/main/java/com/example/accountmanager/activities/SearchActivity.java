@@ -1,6 +1,5 @@
 package com.example.accountmanager.activities;
 
-import android.content.Intent;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,20 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.accountmanager.R;
 import com.example.accountmanager.adapters.SearchItemAdapter;
 import com.example.accountmanager.base.BaseActivity;
-import com.example.accountmanager.base.BaseActivity1;
-import com.example.accountmanager.bean.Account;
-import com.example.accountmanager.dao.AccountDao;
-import com.example.accountmanager.dao.TypeDao;
 import com.example.accountmanager.presenter.SearchActivityPresenter;
-import com.example.accountmanager.utils.ScreenUtil;
-
-import java.util.List;
 
 /**
  * @author CharlesLu
  * @description 搜索界面
  */
-public class SearchActivity extends BaseActivity1<SearchActivityPresenter> {
+public class SearchActivity extends BaseActivity<SearchActivityPresenter> {
 
     private TextView tv_cancel;
     private EditText et_search;

@@ -10,7 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.accountmanager.R;
 import com.example.accountmanager.adapters.AccountAdapter;
-import com.example.accountmanager.base.BaseActivity1;
+import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.presenter.AccountBookActivityPresenter;
 import com.example.accountmanager.ui.TitleBar;
 import com.example.accountmanager.utils.Constants;
@@ -19,7 +19,7 @@ import com.example.accountmanager.utils.Constants;
  * @author CharlesLu
  * @description 每一个类别展示的界面
  */
-public class AccountBookActivity extends BaseActivity1<AccountBookActivityPresenter> {
+public class AccountBookActivity extends BaseActivity<AccountBookActivityPresenter> {
 
     public int id;
     public String name;

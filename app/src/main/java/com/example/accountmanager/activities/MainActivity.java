@@ -11,7 +11,7 @@ import android.widget.RadioButton;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.accountmanager.R;
-import com.example.accountmanager.base.BaseActivity1;
+import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.fragments.ChestFragment;
 import com.example.accountmanager.fragments.HomeFragment;
 import com.example.accountmanager.fragments.MyFragment;
@@ -23,7 +23,7 @@ import com.example.accountmanager.utils.TimeUtil;
  * @author CharlesLu
  * @description 首页
  */
-public class MainActivity extends BaseActivity1<MainActivityPresenter> implements CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends BaseActivity<MainActivityPresenter> implements CompoundButton.OnCheckedChangeListener {
 
     private TitleBar titleBar;
     private RadioButton rb_home;

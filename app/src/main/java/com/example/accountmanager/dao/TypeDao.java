@@ -47,7 +47,7 @@ public class TypeDao {
     }
 
     /* 根据类别名称获取类别信息（精确匹配） */
-    public Type checkTypeByName(String name) {
+    public Type getTypeByName(String name) {
         db = helper.getWritableDatabase();
         String sql = "select * from type where name = ? ";
         Cursor cursor = db.rawQuery(sql, new String[]{name});

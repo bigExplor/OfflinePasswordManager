@@ -4,14 +4,13 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
 import com.example.accountmanager.R;
-import com.example.accountmanager.base.BaseActivity1;
+import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.bean.Account;
 import com.example.accountmanager.bean.Type;
 import com.example.accountmanager.presenter.AddAccountActivityPresenter;
@@ -24,7 +23,7 @@ import java.util.List;
  * @author CharlesLu
  * @description 添加账号的界面
  */
-public class AddAccountActivity extends BaseActivity1<AddAccountActivityPresenter> {
+public class AddAccountActivity extends BaseActivity<AddAccountActivityPresenter> {
 
     private TitleBar titleBar;
     private EditText editTitle;

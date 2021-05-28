@@ -1,5 +1,6 @@
 package com.example.accountmanager.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -76,6 +77,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         SpannableString msg = null;

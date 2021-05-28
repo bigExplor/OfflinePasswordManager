@@ -16,7 +16,7 @@ import com.example.accountmanager.R;
 import com.example.accountmanager.activities.MainActivity;
 
 public class ChestFragment extends Fragment {
-    private MainActivity mActivity;
+    private final MainActivity mActivity;
     private View view;
     private EditText et_key;
     private Button btn_run;
@@ -42,7 +42,10 @@ public class ChestFragment extends Fragment {
     private void initListener() {
         btn_run.setOnClickListener(v -> {
             String key = et_key.getText().toString();
-            if (TextUtils.isEmpty(key)) return;
+            if (TextUtils.isEmpty(key)) {
+                mActivity.showToast("密钥错误！");
+                return;
+            }
             boolean success = mActivity.getP().parse(key);
             if (success) et_key.setText("");
         });
