@@ -76,11 +76,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     public void log_d(String msg) {
-        LogUtil.getInstance().d(getClass().getName(), msg);
+        LogUtil.getInstance().d(getClass().getSimpleName() + ":CharlesLu::", msg);
     }
 
     public void log_e(String msg) {
-        LogUtil.getInstance().e(getClass().getName(), msg);
+        LogUtil.getInstance().e(getClass().getSimpleName() + ":CharlesLu::", msg);
     }
 
     public void showItemListDialog(String title, final String []items, final OnItemSelectedListener listener) {

@@ -2,7 +2,9 @@ package com.example.accountmanager.presenter;
 
 import com.example.accountmanager.activities.MainActivity;
 import com.example.accountmanager.bean.Account;
+import com.example.accountmanager.bean.Type;
 import com.example.accountmanager.dao.AccountDao;
+import com.example.accountmanager.dao.TypeDao;
 import com.example.accountmanager.utils.FileUtil;
 import com.example.accountmanager.utils.StringUtil;
 import com.google.gson.ExclusionStrategy;
@@ -22,6 +24,7 @@ import java.util.List;
 public class MainActivityPresenter implements BasePresenter<MainActivity> {
     private MainActivity view;
 
+    private final TypeDao typeDao = new TypeDao();
     private final AccountDao accountDao = new AccountDao();
 
     private final Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
@@ -41,25 +44,35 @@ public class MainActivityPresenter implements BasePresenter<MainActivity> {
         this.view = view;
     }
 
+    private int getAccountSize(List<Type> list) {
+        int size = 0;
+        for (Type type : list) {
+            size += type.getAccounts().size();
+        }
+        return size;
+    }
+
     /* 导出账号信息为字符串 */
     public void cpyStr() {
-        List<Account> accountList = accountDao.getAllAccounts();
-        if (accountList.size() == 0) {
+        List<Type> typeList = typeDao.getAllType();
+        int accountSize = getAccountSize(typeList);
+        if (accountSize == 0) {
             view.showToast("请先添加账号信息");
             return;
         }
-        if (accountList.size() > 5) {
+        if (accountSize > 5) {
             view.showToast("账号条目过多，请使用文件备份");
             return;
         }
-        view.copy(StringUtil.encode(gson.toJson(accountList)));
+        view.copy(StringUtil.encode(gson.toJson(typeList)));
         view.showToast("备份字符串复制成功！");
     }
 
     /* 导出账号信息为文件 */
     public void cpyFile() {
-        List<Account> accountList = accountDao.getAllAccounts();
-        if (accountList.size() == 0) {
+        List<Type> typeList = typeDao.getAllType();
+        int accountSize = getAccountSize(typeList);
+        if (accountSize == 0) {
             view.showToast("请先添加账号信息");
             return;
         }
@@ -67,7 +80,7 @@ public class MainActivityPresenter implements BasePresenter<MainActivity> {
         String filePath = "";
         try {
             filePath = FileUtil.getFilePath(view, "accounts.txt");
-            success = FileUtil.writeToFile(filePath, StringUtil.encode(gson.toJson(accountList)), false);
+            success = FileUtil.writeToFile(filePath, StringUtil.encode(gson.toJson(typeList)), false);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,24 +93,36 @@ public class MainActivityPresenter implements BasePresenter<MainActivity> {
 
     /* 将密文解析为账号信息并导入 */
     public boolean parse(String key) {
-        List<Account> accountList = null;
-        boolean parseSuccess = true;
+        List<Type> typeList = null;
         try {
-            accountList = gson.fromJson(StringUtil.decode(key), new TypeToken<List<Account>>(){}.getType());
+            typeList = gson.fromJson(StringUtil.decode(key), new TypeToken<List<Type>>(){}.getType());
         } catch (Exception e) {
-            parseSuccess = false;
+            e.printStackTrace();
         }
-        if (!parseSuccess || accountList == null) {
+        if (typeList == null) {
             view.showToast("密钥错误！");
             return false;
         }
         view.showLoading(false);
-        for (Account account: accountList) {
-            account.removeInfo();
-            accountDao.addAccount(account);
+        for (Type type : typeList) {
+            addType(type);
         }
         view.hideLoading();
         view.showToast("导入完成");
         return true;
+    }
+
+    private void addType(Type type) {
+        Type t = typeDao.getTypeByName(type.getName());
+        if (t == null) {
+            typeDao.addType(type);
+            t = typeDao.getTypeByName(type.getName());
+        }
+        for (Account account : type.getAccounts()) {
+            Account ac = accountDao.getAccountById(account.getId());
+            if (ac != null && ac.getTitle().equals(account.getTitle())) continue;
+            account.setTypeId(t.getId());
+            accountDao.addAccount(account);
+        }
     }
 }

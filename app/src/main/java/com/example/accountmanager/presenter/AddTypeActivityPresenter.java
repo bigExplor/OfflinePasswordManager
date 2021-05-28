@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.example.accountmanager.activities.AddTypeActivity;
 import com.example.accountmanager.bean.Account;
 import com.example.accountmanager.bean.Type;
-import com.example.accountmanager.bean.TypeImg;
 import com.example.accountmanager.dao.AccountDao;
 import com.example.accountmanager.dao.TypeDao;
 
@@ -49,7 +48,7 @@ public class AddTypeActivityPresenter implements BasePresenter<AddTypeActivity> 
             view.showToast("请选择分类的图标");
             return;
         }
-        Type t = typeDao.checkTypeByName(type.getName());
+        Type t = typeDao.getTypeByName(type.getName());
         if (type.getId() > 0) { // 修改的逻辑
             if (t != null && t.getId() != type.getId()) {
                 view.showToast("分类名重复！");
