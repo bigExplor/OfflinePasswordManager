@@ -112,6 +112,39 @@ public class MainActivityPresenter implements BasePresenter<MainActivity> {
         return true;
     }
 
+//    老版的解析方式
+//    public boolean parse(String key) {
+//        List<Account> accountList = null;
+//        try {
+//            accountList = gson.fromJson(StringUtil.decode(key), new TypeToken<List<Account>>(){}.getType());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        if (accountList == null) {
+//            view.showToast("密钥错误！");
+//            return false;
+//        }
+//        view.showLoading(false);
+//        Map<Integer, Type> map = new HashMap<>();
+//        for (Account account : accountList) {
+//            view.log_d(account.toString());
+//            Type type = map.get(account.getTypeId());
+//            if (type == null) {
+//                type = new Type();
+//                type.setName("Type_" + account.getTypeId());
+//                type.setImgId(R.drawable.others_cover);
+//                typeDao.addType(type);
+//                type.setId(typeDao.getTypeByName(type.getName()).getId());
+//                map.put(account.getTypeId(), type);
+//            }
+//            account.setTypeId(type.getId());
+//            accountDao.addAccount(account);
+//        }
+//        view.hideLoading();
+//        view.showToast("导入完成");
+//        return true;
+//    }
+
     private void addType(Type type) {
         Type t = typeDao.getTypeByName(type.getName());
         if (t == null) {
