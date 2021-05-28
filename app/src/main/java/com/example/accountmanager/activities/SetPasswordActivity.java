@@ -7,6 +7,7 @@ import android.widget.EditText;
 
 import com.example.accountmanager.R;
 import com.example.accountmanager.base.BaseActivity;
+import com.example.accountmanager.presenter.BasePresenter;
 import com.example.accountmanager.ui.TitleBar;
 import com.example.accountmanager.utils.SpUtil;
 
@@ -25,6 +26,11 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected int getLayoutId() {
         return R.layout.activity_set_password;
+    }
+
+    @Override
+    protected BasePresenter getPresenter() {
+        return null;
     }
 
     @Override

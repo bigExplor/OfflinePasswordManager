@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.accountmanager.R;
 import com.example.accountmanager.adapters.ChooseTypeImgAdapter;
-import com.example.accountmanager.base.BaseActivity1;
-import com.example.accountmanager.bean.Account;
+import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.bean.Type;
 import com.example.accountmanager.bean.TypeImg;
 import com.example.accountmanager.presenter.AddTypeActivityPresenter;
@@ -24,7 +23,7 @@ import java.util.List;
  * @author CharlesLu
  * @description 添加类别的界面
  */
-public class AddTypeActivity extends BaseActivity1<AddTypeActivityPresenter> {
+public class AddTypeActivity extends BaseActivity<AddTypeActivityPresenter> {
 
     private TitleBar mTitleBar;
     private EditText mEtType;

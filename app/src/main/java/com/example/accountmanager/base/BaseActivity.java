@@ -14,18 +14,21 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.accountmanager.R;
+import com.example.accountmanager.presenter.BasePresenter;
 import com.example.accountmanager.ui.LoadingDialog;
 import com.example.accountmanager.utils.BiometricUtil;
 import com.example.accountmanager.utils.LogUtil;
 import com.example.accountmanager.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity {
     private ToastUtil toastUtil;
     private ClipboardManager cm;
 
     private boolean cancelable;
     private LoadingDialog loadingDialog;
+
+    protected P p;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +38,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // 去掉ActionBar
         getSupportActionBar().hide();
+
+        // 绑定 presenter
+        p = getPresenter();
+        if (p != null) p.bindView(this);
 
         initView();
         initListener();
@@ -52,6 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void initView() { }
     protected void initData() { }
     protected void initListener() { }
+    protected abstract P getPresenter();
 
     protected int getStatusColor() {
         return R.color.logoRed;
@@ -197,7 +205,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                         break;
                     case BiometricUtil.OnResultListener.SUPPORT_NONE_ENROLLED:
                         listener.onResult(false);
-                        showToast("未添加指纹识别数据");
+                        showToast("需先在手机添加指纹数据");
                         break;
                 }
             }

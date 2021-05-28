@@ -80,11 +80,15 @@ public class MainActivityPresenter implements BasePresenter<MainActivity> {
 
     /* 将密文解析为账号信息并导入 */
     public boolean parse(String key) {
-        List<Account> accountList;
+        List<Account> accountList = null;
+        boolean parseSuccess = true;
         try {
             accountList = gson.fromJson(StringUtil.decode(key), new TypeToken<List<Account>>(){}.getType());
         } catch (Exception e) {
-            view.showToast("密钥错误");
+            parseSuccess = false;
+        }
+        if (!parseSuccess || accountList == null) {
+            view.showToast("密钥错误！");
             return false;
         }
         view.showLoading(false);
