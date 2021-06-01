@@ -3,7 +3,6 @@ package com.example.accountmanager.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -35,7 +34,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     private ChestFragment chestFragment;
 
     private boolean isBack = false;
-    private final Handler handler = new Handler();
 
     private final View.OnClickListener listener = new View.OnClickListener() {
         @Override
@@ -146,9 +144,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
         }
         isBack = true;
         showToast("再次点击退出应用");
-        TimeUtil.getInstance().postDelayed(() -> {
-            isBack = false;
-        }, 1500);
+        TimeUtil.getInstance().postDelayed(() -> isBack = false, 1500);
     }
 
     /* 切换 fragment */

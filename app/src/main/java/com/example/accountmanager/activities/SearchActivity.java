@@ -48,26 +48,18 @@ public class SearchActivity extends BaseActivity<SearchActivityPresenter> {
 
     @Override
     protected void initListener() {
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        et_search.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    String str = et_search.getText().toString().trim();
-                    if (TextUtils.isEmpty(str)) {
-                        showToast("输入关键字");
-                        et_search.requestFocus();
-                        return false;
-                    }
-                    p.search(str);
+        tv_cancel.setOnClickListener(v -> finish());
+        et_search.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                String str = et_search.getText().toString().trim();
+                if (TextUtils.isEmpty(str)) {
+                    showToast("输入关键字");
+                    et_search.requestFocus();
+                    return false;
                 }
-                return false;
+                p.search(str);
             }
+            return false;
         });
     }
 

@@ -21,6 +21,8 @@ import com.example.accountmanager.utils.LogUtil;
 import com.example.accountmanager.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 
+import java.util.Objects;
+
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity {
     private ToastUtil toastUtil;
     private ClipboardManager cm;
@@ -37,7 +39,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         toastUtil = new ToastUtil(this);
 
         // 去掉ActionBar
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         // 绑定 presenter
         p = getPresenter();
@@ -87,12 +89,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
         builder.setCancelable(true);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                listener.onResult(items[which], which);
-            }
-        }).create();
+        builder.setItems(items, (dialog, which) -> listener.onResult(items[which], which)).create();
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -103,19 +100,13 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         builder.setMessage(msg);
         builder.setCancelable(true);
 
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                listener.onResult(true);
-                dialog.dismiss();
-            }
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            listener.onResult(true);
+            dialog.dismiss();
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                listener.onResult(false);
-                dialog.dismiss();
-            }
+        builder.setNegativeButton("取消", (dialog, which) -> {
+            listener.onResult(false);
+            dialog.dismiss();
         });
 
         AlertDialog dialog = builder.create();
@@ -128,12 +119,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         builder.setMessage(msg);
         builder.setCancelable(true);
 
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setPositiveButton("确定", (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -156,58 +142,49 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     public void addOnSoftKeyBoardVisibleListener(OnKeyBoardStateChangedListener listener) {
         final View decorView = getWindow().getDecorView();
-        decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect rect = new Rect();
-                decorView.getWindowVisibleDisplayFrame(rect);
-                boolean isKeyBoardOpen = (double) (rect.bottom - rect.top) / decorView.getHeight() < 0.8;
-                if (isKeyBoardOpen) {
-                    listener.onChange(true);
-                } else {
-                    listener.onChange(false);
-                }
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect rect = new Rect();
+            decorView.getWindowVisibleDisplayFrame(rect);
+            boolean isKeyBoardOpen = (double) (rect.bottom - rect.top) / decorView.getHeight() < 0.8;
+            if (isKeyBoardOpen) {
+                listener.onChange(true);
+            } else {
+                listener.onChange(false);
             }
         });
     }
 
     public void showBiometric(OnFingerResultListener listener) {
-        BiometricUtil.getInstance(this).isSupportBiometric(new BiometricUtil.OnResultListener() {
-            @Override
-            public void onResult(int code) {
-                switch (code) {
-                    case BiometricUtil.OnResultListener.SUPPORT_SUCCESS:
-                        log_d("开始指纹识别");
-                        BiometricUtil.getInstance(BaseActivity.this).showBiometricPrompt(new BiometricUtil.OnResultListener() {
-                            @Override
-                            public void onResult(int code) {
-                                switch (code) {
-                                    case BiometricUtil.OnResultListener.AUTH_FAIL:
-                                    case BiometricUtil.OnResultListener.AUTH_ERROR:
-                                        listener.onResult(false);
-                                        showToast("验证失败");
-                                        break;
-                                    case BiometricUtil.OnResultListener.AUTH_SUCCESS:
-                                        listener.onResult(true);
-                                        showToast("验证通过");
-                                        break;
-                                }
-                            }
-                        });
-                        break;
-                    case BiometricUtil.OnResultListener.SUPPORT_NO_HARDWARE:
-                        listener.onResult(false);
-                        showToast("手机不支持指纹识别");
-                        break;
-                    case BiometricUtil.OnResultListener.SUPPORT_UNAVAILABLE:
-                        listener.onResult(false);
-                        showToast("当前指纹识别不可用");
-                        break;
-                    case BiometricUtil.OnResultListener.SUPPORT_NONE_ENROLLED:
-                        listener.onResult(false);
-                        showToast("需先在手机添加指纹数据");
-                        break;
-                }
+        BiometricUtil.getInstance(this).isSupportBiometric(code -> {
+            switch (code) {
+                case BiometricUtil.OnResultListener.SUPPORT_SUCCESS:
+                    log_d("开始指纹识别");
+                    BiometricUtil.getInstance(BaseActivity.this).showBiometricPrompt(code1 -> {
+                        switch (code1) {
+                            case BiometricUtil.OnResultListener.AUTH_FAIL:
+                            case BiometricUtil.OnResultListener.AUTH_ERROR:
+                                listener.onResult(false);
+                                showToast("验证失败");
+                                break;
+                            case BiometricUtil.OnResultListener.AUTH_SUCCESS:
+                                listener.onResult(true);
+                                showToast("验证通过");
+                                break;
+                        }
+                    });
+                    break;
+                case BiometricUtil.OnResultListener.SUPPORT_NO_HARDWARE:
+                    listener.onResult(false);
+                    showToast("手机不支持指纹识别");
+                    break;
+                case BiometricUtil.OnResultListener.SUPPORT_UNAVAILABLE:
+                    listener.onResult(false);
+                    showToast("当前指纹识别不可用");
+                    break;
+                case BiometricUtil.OnResultListener.SUPPORT_NONE_ENROLLED:
+                    listener.onResult(false);
+                    showToast("需先在手机添加指纹数据");
+                    break;
             }
         });
     }
@@ -224,7 +201,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     public interface OnItemSelectedListener {
-        void onResult(String item, int positon);
+        void onResult(String item, int position);
     }
 
     public interface OnKeyBoardStateChangedListener {

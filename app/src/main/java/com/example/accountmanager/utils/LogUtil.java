@@ -3,7 +3,7 @@ package com.example.accountmanager.utils;
 import android.util.Log;
 
 public class LogUtil {
-    private boolean showLog = true;
+    private final boolean showLog = true;
     private static LogUtil logUtil;
 
     private LogUtil() { }

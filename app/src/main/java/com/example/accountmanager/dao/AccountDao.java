@@ -79,19 +79,6 @@ public class AccountDao {
         return list;
     }
 
-    /* 获取所有账号信息 */
-    public List<Account> getAllAccounts() {
-        db = helper.getWritableDatabase();
-        String sql = "select * from account ";
-        List<Account> list = new ArrayList<>();
-        Cursor cursor = db.rawQuery(sql, new String[]{});
-        while (cursor.moveToNext()) {
-            list.add(getAccountFromCursor(cursor));
-        }
-        db.close();
-        return list;
-    }
-
     /* 从cursor中解析账号信息 */
     private Account getAccountFromCursor(Cursor cursor) {
         Account account = new Account();

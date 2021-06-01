@@ -25,13 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private MainActivity mActivity;
-    private TypeDao dao;
+    private final MainActivity mActivity;
+    private final TypeDao dao;
     private List<Type> typeList;
     private TypeAdapter adapter;
     private RecyclerView rv;
     private SwipeRefreshLayout swipe;
-    private ImageView iv_search;
 
     public HomeFragment(MainActivity mActivity) {
         this.mActivity = mActivity;
@@ -44,20 +43,12 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.layout_home, container, false);
         rv = view.findViewById(R.id.rv);
         swipe = view.findViewById(R.id.swipe);
-        iv_search = view.findViewById(R.id.iv_search);
-        iv_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mActivity, SearchActivity.class);
-                startActivity(intent);
-            }
+        ImageView iv_search = view.findViewById(R.id.iv_search);
+        iv_search.setOnClickListener(v -> {
+            Intent intent = new Intent(mActivity, SearchActivity.class);
+            startActivity(intent);
         });
-        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                setAdapter();
-            }
-        });
+        swipe.setOnRefreshListener(this::setAdapter);
         setAdapter();
         return view;
     }

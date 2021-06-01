@@ -23,7 +23,7 @@ import com.example.accountmanager.activities.SetPasswordActivity;
 import com.example.accountmanager.utils.SpUtil;
 
 public class MyFragment extends Fragment implements View.OnClickListener {
-    private MainActivity mActivity;
+    private final MainActivity mActivity;
     private View view;
     private LinearLayout ll_pwd;
     private LinearLayout ll_finger_pwd;
@@ -80,7 +80,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        SpannableString msg = null;
+        SpannableString msg;
         switch (v.getId()) {
             case R.id.ll_pwd:
                 Intent intent = new Intent(mActivity, SetPasswordActivity.class);

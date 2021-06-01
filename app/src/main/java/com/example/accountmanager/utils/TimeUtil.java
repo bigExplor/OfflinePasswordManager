@@ -1,6 +1,7 @@
 package com.example.accountmanager.utils;
 
 import android.os.Handler;
+import android.os.Looper;
 
 public class TimeUtil {
     private Handler handler;
@@ -10,7 +11,7 @@ public class TimeUtil {
     public static TimeUtil getInstance() {
         if (utils == null) {
             utils = new TimeUtil();
-            utils.handler = new Handler();
+            utils.handler = new Handler(Looper.myLooper());
         }
         return utils;
     }

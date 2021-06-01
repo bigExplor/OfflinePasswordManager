@@ -9,7 +9,6 @@ public class TypeImg {
     public int imgId;
     public boolean hasChosen;
 
-    public TypeImg() {}
     public TypeImg(int imgId, boolean hasChosen) {
         this.imgId = imgId;
         this.hasChosen = hasChosen;

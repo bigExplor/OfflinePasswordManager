@@ -2,16 +2,14 @@ package com.example.accountmanager.utils;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 public class ScreenUtil {
     private static float scale = 0;
-    private static Point point = new Point();
+    private static final Point point = new Point();
 
     /* dp转px */
     public static int dp2px(Context context, float dpValue) {
@@ -31,15 +29,9 @@ public class ScreenUtil {
 
     /* 获取手机屏幕的宽高 */
     public static Point getScreenSize(Context context) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        if (wm == null) return null;
-        Display display = wm.getDefaultDisplay();
+        Display display = context.getDisplay();
         DisplayMetrics dm = new DisplayMetrics();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            display.getMetrics(dm);
-        } else {
-            display.getRealMetrics(dm);
-        }
+        display.getRealMetrics(dm);
         point.x = dm.widthPixels;
         point.y = dm.heightPixels;
         return point;

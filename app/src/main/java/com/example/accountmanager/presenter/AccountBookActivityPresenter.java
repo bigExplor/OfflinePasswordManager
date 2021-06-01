@@ -25,8 +25,6 @@ import java.util.List;
 public class AccountBookActivityPresenter implements BasePresenter<AccountBookActivity> {
     private AccountBookActivity view;
 
-    private Type currentType;
-
     private AccountAdapter adapter;
     private final List<Account> accounts = new ArrayList<>();
 
@@ -42,7 +40,7 @@ public class AccountBookActivityPresenter implements BasePresenter<AccountBookAc
 
     /* 从数据库刷新当前最新的账号列表 */
     private void refreshAccountList() {
-        currentType = typeDao.getTypeById(view.id);
+        Type currentType = typeDao.getTypeById(view.id);
         if (currentType == null) {
             view.finish();
             return;
@@ -63,7 +61,7 @@ public class AccountBookActivityPresenter implements BasePresenter<AccountBookAc
             isOpenEye = !isOpenEye;
             setTitleEye();
         });
-        if (accounts == null || accounts.isEmpty()) return;
+        if (accounts.isEmpty()) return;
         for (Account account: accounts) {
             account.setMode(isOpenEye? 1: 0);
         }

@@ -1,5 +1,6 @@
 package com.example.accountmanager.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,7 +27,7 @@ public class FileUtil {
         String filePath = context.getFilesDir() + File.separator + fileName;
         File file = new File(filePath);
         if (!file.exists()) {
-            file.createNewFile();
+            boolean isSuccess = file.createNewFile();
         }
         return filePath;
     }

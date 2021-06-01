@@ -103,8 +103,6 @@ public class AddTypeActivity extends BaseActivity<AddTypeActivityPresenter> {
             type.setName(mEtType.getText().toString().trim());
             p.commit();
         });
-        mCancelBtn.setOnClickListener(v -> {
-            p.delete();
-        });
+        mCancelBtn.setOnClickListener(v -> p.delete());
     }
 }

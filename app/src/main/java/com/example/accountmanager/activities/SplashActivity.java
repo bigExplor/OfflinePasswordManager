@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.example.accountmanager.R;
 import com.example.accountmanager.base.BaseActivity;
-import com.example.accountmanager.presenter.BasePresenter;
+import com.example.accountmanager.presenter.SplashActivityPresenter;
 import com.example.accountmanager.utils.SpUtil;
 import com.example.accountmanager.utils.TimeUtil;
 
@@ -13,14 +13,14 @@ import com.example.accountmanager.utils.TimeUtil;
  * @author CharlesLu
  * @description 启动页
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity<SplashActivityPresenter> {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_splash;
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected SplashActivityPresenter getPresenter() {
         return null;
     }
 

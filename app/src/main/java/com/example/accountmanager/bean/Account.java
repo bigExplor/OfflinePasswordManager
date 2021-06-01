@@ -127,21 +127,4 @@ public class Account {
         if ("暂无提供".equals(url)) url = "";
         if ("暂无提供".equals(username)) username = "";
     }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", username='" + username + '\'' +
-                ", mail='" + mail + '\'' +
-                ", phone='" + phone + '\'' +
-                ", account='" + account + '\'' +
-                ", password='" + password + '\'' +
-                ", url='" + url + '\'' +
-                ", note='" + note + '\'' +
-                ", mode=" + mode +
-                ", typeId=" + typeId +
-                '}';
-    }
 }

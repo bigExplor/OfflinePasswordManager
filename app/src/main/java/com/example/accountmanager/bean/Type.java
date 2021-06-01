@@ -1,7 +1,5 @@
 package com.example.accountmanager.bean;
 
-import com.example.accountmanager.R;
-
 import java.util.List;
 
 public class Type {
@@ -40,15 +38,5 @@ public class Type {
 
     public void setAccounts(List<Account> list) {
         this.accounts = list;
-    }
-
-    @Override
-    public String toString() {
-        return "Type{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", imgId=" + imgId +
-                ", accounts=" + accounts +
-                '}';
     }
 }

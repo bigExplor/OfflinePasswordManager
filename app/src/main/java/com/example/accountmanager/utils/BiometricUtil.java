@@ -3,6 +3,7 @@ package com.example.accountmanager.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricManager;
@@ -12,7 +13,7 @@ import androidx.fragment.app.FragmentActivity;
 import java.util.concurrent.Executor;
 
 public class BiometricUtil {
-    private Context context;
+    private final Context context;
     @SuppressLint("StaticFieldLeak")
     private static BiometricUtil biometricUtil;
 
@@ -52,15 +53,15 @@ public class BiometricUtil {
         }
     }
 
-    private final Handler handler = new Handler();
+    private final Handler handler = new Handler(Looper.myLooper());
 
     private final Executor executor = handler::post;
 
     public void showBiometricPrompt(final OnResultListener listener) {
         BiometricPrompt.PromptInfo promptInfo =
                 new BiometricPrompt.PromptInfo.Builder()
-                        .setTitle("Biometric login for my app") //设置大标题
-                        .setSubtitle("Log in using your biometric credential") // 设置标题下的提示
+                        .setTitle("指纹验证") //设置大标题
+                        .setSubtitle("使用指纹验证账号本子APP") // 设置标题下的提示
                         .setNegativeButtonText("取消") //设置取消按钮
                         .build();
 

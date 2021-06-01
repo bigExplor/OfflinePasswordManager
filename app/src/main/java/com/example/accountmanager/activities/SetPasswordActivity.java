@@ -7,7 +7,7 @@ import android.widget.EditText;
 
 import com.example.accountmanager.R;
 import com.example.accountmanager.base.BaseActivity;
-import com.example.accountmanager.presenter.BasePresenter;
+import com.example.accountmanager.presenter.SetPasswordActivityPresenter;
 import com.example.accountmanager.ui.TitleBar;
 import com.example.accountmanager.utils.SpUtil;
 
@@ -15,7 +15,7 @@ import com.example.accountmanager.utils.SpUtil;
  * @author CharlesLu
  * @description 设置二级密码的界面
  */
-public class SetPasswordActivity extends BaseActivity implements View.OnClickListener {
+public class SetPasswordActivity extends BaseActivity<SetPasswordActivityPresenter> implements View.OnClickListener {
 
     private TitleBar titleBar;
     private EditText et_pwd;
@@ -29,7 +29,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected SetPasswordActivityPresenter getPresenter() {
         return null;
     }
 
@@ -49,12 +49,7 @@ public class SetPasswordActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void initData() {
         titleBar.setText("设置二级密码");
-        titleBar.setLeft(R.drawable.left, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        titleBar.setLeft(R.drawable.left, v -> finish());
         hasPwd = !TextUtils.isEmpty(SpUtil.getInstance().getString("password"));
         if (hasPwd) {
             btn.setText("确认关闭");
