@@ -2,8 +2,10 @@ package com.example.accountmanager.presenter;
 
 import android.content.Intent;
 
+import com.example.accountmanager.activities.AccountBookActivity;
 import com.example.accountmanager.activities.MainActivity;
 import com.example.accountmanager.activities.PasswordActivity;
+import com.example.accountmanager.utils.Constants;
 import com.example.accountmanager.utils.SpUtil;
 
 import java.util.ArrayList;
@@ -19,6 +21,10 @@ public class PasswordActivityPresenter implements BasePresenter<PasswordActivity
 
     private final List<Integer> pwd = new ArrayList<>();
 
+    public int id;
+    public String name;
+    public String from;
+
     @Override
     public void bindView(PasswordActivity view) {
         this.view = view;
@@ -30,7 +36,15 @@ public class PasswordActivityPresenter implements BasePresenter<PasswordActivity
         for (Integer i: pwd) ans.append(i);
         if (ans.toString().equals(SpUtil.getInstance().getString("password"))) {
             view.showToast("验证通过");
-            Intent intent = new Intent(view, MainActivity.class);
+            Intent intent;
+            if ("private".equals(from)) {
+                Constants.hasIntoPrivateSpace = true;
+                intent = new Intent(view, AccountBookActivity.class);
+                intent.putExtra("id", id);
+                intent.putExtra("name", name);
+            } else {
+                intent = new Intent(view, MainActivity.class);
+            }
             view.startActivity(intent);
             view.finish();
             return;

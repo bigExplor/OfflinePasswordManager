@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.accountmanager.R;
 import com.example.accountmanager.activities.AccountBookActivity;
 import com.example.accountmanager.activities.MainActivity;
+import com.example.accountmanager.activities.PasswordActivity;
 import com.example.accountmanager.bean.Type;
 import com.example.accountmanager.utils.Constants;
 
@@ -55,15 +56,11 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         holder.ll_container.setOnClickListener(v -> {
             if (type.getId() == Constants.privateId) {
                 if (!Constants.hasIntoPrivateSpace) {
-                    mActivity.showBiometric(isSuccess -> {
-                        if (isSuccess) {
-                            Constants.hasIntoPrivateSpace = true;
-                            Intent intent = new Intent(mActivity, AccountBookActivity.class);
-                            intent.putExtra("id", type.getId());
-                            intent.putExtra("name", type.getName());
-                            mActivity.startActivity(intent);
-                        }
-                    });
+                    Intent intent = new Intent(mActivity, PasswordActivity.class);
+                    intent.putExtra("id", type.getId());
+                    intent.putExtra("name", type.getName());
+                    intent.putExtra("from", "private");
+                    mActivity.startActivity(intent);
                     return;
                 }
             }

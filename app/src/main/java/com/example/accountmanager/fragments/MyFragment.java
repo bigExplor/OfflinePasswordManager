@@ -20,6 +20,8 @@ import androidx.fragment.app.Fragment;
 import com.example.accountmanager.R;
 import com.example.accountmanager.activities.MainActivity;
 import com.example.accountmanager.activities.SetPasswordActivity;
+import com.example.accountmanager.base.BaseActivity;
+import com.example.accountmanager.utils.BiometricUtil;
 import com.example.accountmanager.utils.SpUtil;
 
 public class MyFragment extends Fragment implements View.OnClickListener {
@@ -87,15 +89,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 mActivity.startActivity(intent);
                 break;
             case R.id.ll_finger_pwd:
-                if (TextUtils.isEmpty(SpUtil.getInstance().getString("password"))) {
-                    mActivity.showToast("需先设置二级密码");
-                    return;
-                }
-                boolean finger = SpUtil.getInstance().getBoolean("finger");
-                SpUtil.getInstance().putBoolean("finger", !finger);
-                setChooseFinger();
-                if (finger) mActivity.showToast("关闭指纹解锁");
-                else mActivity.showToast("开启指纹解锁");
+                openFingerAuth();
                 break;
             case R.id.iv_cpy_str:
                 mActivity.getP().cpyStr();
@@ -115,6 +109,31 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 mActivity.showTip("小贴士", msg);
                 break;
         }
+    }
+
+    private void openFingerAuth() {
+        if (TextUtils.isEmpty(SpUtil.getInstance().getString("password"))) {
+            mActivity.showToast("需先设置二级密码");
+            return;
+        }
+        BiometricUtil.getInstance(mActivity).isSupportBiometric(code -> {
+            switch (code) {
+                case BiometricUtil.OnResultListener.SUPPORT_SUCCESS:
+                    boolean finger = SpUtil.getInstance().getBoolean("finger");
+                    SpUtil.getInstance().putBoolean("finger", !finger);
+                    setChooseFinger();
+                    break;
+                case BiometricUtil.OnResultListener.SUPPORT_NO_HARDWARE:
+                    mActivity.showToast("手机不支持指纹识别");
+                    break;
+                case BiometricUtil.OnResultListener.SUPPORT_UNAVAILABLE:
+                    mActivity.showToast("当前指纹识别不可用");
+                    break;
+                case BiometricUtil.OnResultListener.SUPPORT_NONE_ENROLLED:
+                    mActivity.showToast("需先在手机添加指纹数据");
+                    break;
+            }
+        });
     }
 
     public void onShow() {

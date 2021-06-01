@@ -65,6 +65,12 @@ public class PasswordActivity extends BaseActivity<PasswordActivityPresenter> im
         if (!SpUtil.getInstance().getBoolean("finger")) {
             iv_finger.setVisibility(View.GONE);
         }
+        String from = getIntent().getStringExtra("from");
+        if ("private".equals(from)) {
+            p.from = from;
+            p.id = getIntent().getIntExtra("id", -1);
+            p.name = getIntent().getStringExtra("name");
+        }
     }
 
     @Override
