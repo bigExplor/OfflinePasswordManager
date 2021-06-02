@@ -70,6 +70,7 @@ public class PasswordActivity extends BaseActivity<PasswordActivityPresenter> im
             p.from = from;
             p.id = getIntent().getIntExtra("id", -1);
             p.name = getIntent().getStringExtra("name");
+            iv_finger.setVisibility(View.GONE);
         }
     }
 
