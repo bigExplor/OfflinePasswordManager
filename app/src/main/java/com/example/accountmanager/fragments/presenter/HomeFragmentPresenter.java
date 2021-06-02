@@ -15,6 +15,7 @@ import java.util.List;
  * @description
  */
 public class HomeFragmentPresenter implements BaseFragmentPresenter<HomeFragment> {
+    @SuppressWarnings({"FieldCanBeLocal", "unused", "RedundantSuppression"})
     private HomeFragment view;
 
     public List<Type> typeList;

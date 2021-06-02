@@ -1,7 +1,6 @@
 package com.example.accountmanager.fragments.presenter;
 
 import android.text.TextUtils;
-import android.view.View;
 
 import com.example.accountmanager.fragments.MyFragment;
 import com.example.accountmanager.utils.BiometricUtil;

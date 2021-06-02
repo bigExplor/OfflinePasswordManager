@@ -1,15 +1,8 @@
 package com.example.accountmanager.fragments;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -19,14 +12,7 @@ import com.example.accountmanager.activities.MainActivity;
 import com.example.accountmanager.activities.SearchActivity;
 import com.example.accountmanager.adapters.TypeAdapter;
 import com.example.accountmanager.base.BaseFragment;
-import com.example.accountmanager.bean.Type;
-import com.example.accountmanager.dao.TypeDao;
 import com.example.accountmanager.fragments.presenter.HomeFragmentPresenter;
-import com.example.accountmanager.utils.Constants;
-import com.example.accountmanager.utils.SpUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeFragment extends BaseFragment<HomeFragmentPresenter> {
     private final MainActivity mActivity;

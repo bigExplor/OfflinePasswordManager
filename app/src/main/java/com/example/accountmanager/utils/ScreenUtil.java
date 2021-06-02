@@ -20,6 +20,7 @@ public class ScreenUtil {
     }
 
     /* px转dp */
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public static int px2dp(Context context, float pxValue) {
         if (scale == 0) {
             scale = context.getResources().getDisplayMetrics().density;
@@ -28,6 +29,7 @@ public class ScreenUtil {
     }
 
     /* 获取手机屏幕的宽高 */
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public static Point getScreenSize(Context context) {
         Display display = context.getDisplay();
         DisplayMetrics dm = new DisplayMetrics();
@@ -38,6 +40,7 @@ public class ScreenUtil {
     }
 
     /* 隐藏软键盘 */
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public static void hideKeyboard(View view){
         InputMethodManager imm = (InputMethodManager) view.getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -47,6 +50,7 @@ public class ScreenUtil {
     }
 
     /* 呼出软键盘 */
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public static void showKeyboard(View view){
         if (view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager) view.getContext()

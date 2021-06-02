@@ -26,6 +26,7 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
 
     @Nullable
     @Override
+    @SuppressWarnings("unchecked")
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(getLayoutId(), container, false);
 

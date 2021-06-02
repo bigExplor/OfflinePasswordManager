@@ -14,6 +14,7 @@ public class SpUtil {
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     private SpUtil() { }
     private SpUtil(Context context) {
         this.mContext = context;
@@ -72,34 +73,40 @@ public class SpUtil {
     }
 
     // 添加float数据
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void putFloat(String key, float value) {
         getEditor().putFloat(key, value);
         getEditor().commit();
     }
 
     // 获取float数据
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public float getFloat(String key) {
         return getSP().getFloat(key, 0f);
     }
 
     // 添加long数据
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void putLong(String key, long value) {
         getEditor().putLong(key, value);
         getEditor().commit();
     }
 
     // 获取long数据
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public Long getLong(String key) {
-        return getSP().getLong(key, 0l);
+        return getSP().getLong(key, 0L);
     }
 
     // 添加int数据
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void putInt(String key, int value) {
         getEditor().putInt(key, value);
         getEditor().commit();
     }
 
     // 获取int数据
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public int getInt(String key) {
         return getSP().getInt(key, 0);
     }
@@ -110,6 +117,7 @@ public class SpUtil {
         getEditor().commit();
     }
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void clear() {
         getEditor().clear();
         getEditor().commit();
@@ -123,6 +131,7 @@ public class SpUtil {
     }
 
     // 切换到默认配置
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void reset() {
         switchSp("Configuration");
     }

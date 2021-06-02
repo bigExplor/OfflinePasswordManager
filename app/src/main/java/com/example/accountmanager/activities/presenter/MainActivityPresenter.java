@@ -1,9 +1,7 @@
 package com.example.accountmanager.activities.presenter;
 
 import com.example.accountmanager.activities.MainActivity;
-import com.example.accountmanager.bean.Account;
 import com.example.accountmanager.bean.Type;
-import com.example.accountmanager.dao.AccountDao;
 import com.example.accountmanager.dao.TypeDao;
 import com.example.accountmanager.utils.FileUtil;
 import com.example.accountmanager.utils.StringUtil;
@@ -11,7 +9,6 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.List;

@@ -21,16 +21,17 @@ import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.Objects;
 
+@SuppressWarnings("rawtypes")
 public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppCompatActivity {
     private ToastUtil toastUtil;
     private ClipboardManager cm;
 
-    private boolean cancelable;
     private LoadingDialog loadingDialog;
 
     protected P p;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
@@ -79,6 +80,7 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
         LogUtil.getInstance().d(getClass().getSimpleName() + ":CharlesLu::", msg);
     }
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void log_e(String msg) {
         LogUtil.getInstance().e(getClass().getSimpleName() + ":CharlesLu::", msg);
     }
@@ -124,7 +126,7 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     }
 
     public void showLoading(boolean cancelable) {
-        if (loadingDialog == null || this.cancelable != cancelable) {
+        if (loadingDialog == null) {
             loadingDialog = new LoadingDialog(this, cancelable);
         }
         if (!loadingDialog.isShowing()) {
@@ -138,17 +140,14 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
         }
     }
 
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void addOnSoftKeyBoardVisibleListener(OnKeyBoardStateChangedListener listener) {
         final View decorView = getWindow().getDecorView();
         decorView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             Rect rect = new Rect();
             decorView.getWindowVisibleDisplayFrame(rect);
             boolean isKeyBoardOpen = (double) (rect.bottom - rect.top) / decorView.getHeight() < 0.8;
-            if (isKeyBoardOpen) {
-                listener.onChange(true);
-            } else {
-                listener.onChange(false);
-            }
+            listener.onChange(isKeyBoardOpen);
         });
     }
 
@@ -187,6 +186,7 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
         });
     }
 
+    @SuppressWarnings("deprecation")
     public void copy(String msg) {
         if (cm == null) {
             cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);

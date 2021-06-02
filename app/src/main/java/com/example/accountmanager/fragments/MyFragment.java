@@ -2,27 +2,18 @@ package com.example.accountmanager.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.example.accountmanager.R;
 import com.example.accountmanager.activities.MainActivity;
 import com.example.accountmanager.activities.SetPasswordActivity;
 import com.example.accountmanager.base.BaseFragment;
 import com.example.accountmanager.fragments.presenter.MyFragmentPresenter;
-import com.example.accountmanager.utils.BiometricUtil;
 import com.example.accountmanager.utils.SpUtil;
 
 public class MyFragment extends BaseFragment<MyFragmentPresenter> implements View.OnClickListener {

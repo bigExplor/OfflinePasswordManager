@@ -14,7 +14,6 @@ import android.webkit.MimeTypeMap;
 import androidx.core.content.FileProvider;
 
 import com.example.accountmanager.BuildConfig;
-import com.example.accountmanager.base.BaseApplication;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,11 +22,12 @@ import java.util.List;
 
 public class FileUtil {
     /* 获取默认的文件存储路径 */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static String getFilePath(Context context, String fileName) throws IOException {
         String filePath = context.getFilesDir() + File.separator + fileName;
         File file = new File(filePath);
         if (!file.exists()) {
-            boolean isSuccess = file.createNewFile();
+            file.createNewFile();
         }
         return filePath;
     }
@@ -50,7 +50,7 @@ public class FileUtil {
         File file = new File(path);
         mimeType = getMimeType(file.getAbsolutePath());
         Log.d("shaetag", "share: " + mimeType);
-        Uri uri = null;
+        Uri uri;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             String authority = BuildConfig.APPLICATION_ID + ".fileprovider";
             uri = FileProvider.getUriForFile(context, authority, file);
@@ -83,7 +83,7 @@ public class FileUtil {
     /* 判断是否有应用支持分享该类型的文件 */
     private static boolean hasApplication(Context context, Intent intent) {
         PackageManager packageManager = context.getPackageManager();
-        List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
+        @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
         return activities.size() > 0;
     }
 }
