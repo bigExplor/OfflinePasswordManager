@@ -1,57 +1,47 @@
 package com.example.accountmanager.fragments;
 
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.example.accountmanager.R;
 import com.example.accountmanager.activities.MainActivity;
+import com.example.accountmanager.base.BaseFragment;
+import com.example.accountmanager.fragments.presenter.ChestFragmentPresenter;
 
-public class ChestFragment extends Fragment {
-    private final MainActivity mActivity;
-    private View view;
+public class ChestFragment extends BaseFragment<ChestFragmentPresenter> {
     private EditText et_key;
     private Button btn_run;
+    public final MainActivity mActivity;
 
     public ChestFragment(MainActivity mActivity) {
         this.mActivity = mActivity;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_chest, container, false);
-        initView();
-        initListener();
-        return view;
+    protected ChestFragmentPresenter getPresenter() {
+        return new ChestFragmentPresenter();
     }
 
-    private void initView() {
+    @Override
+    protected int getLayoutId() {
+        return R.layout.layout_chest;
+    }
+
+    protected void initView() {
         et_key = view.findViewById(R.id.et_key);
         btn_run = view.findViewById(R.id.btn_run);
     }
 
-    private void initListener() {
+    protected void initListener() {
         btn_run.setOnClickListener(v -> {
             String key = et_key.getText().toString();
             if (TextUtils.isEmpty(key)) {
                 mActivity.showToast("密钥错误！");
                 return;
             }
-            boolean success = mActivity.getP().parse(key);
+            boolean success = p.parse(key);
             if (success) et_key.setText("");
         });
-    }
-
-    public void onShow() {
-
     }
 }

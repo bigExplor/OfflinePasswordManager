@@ -20,11 +20,12 @@ import androidx.fragment.app.Fragment;
 import com.example.accountmanager.R;
 import com.example.accountmanager.activities.MainActivity;
 import com.example.accountmanager.activities.SetPasswordActivity;
+import com.example.accountmanager.base.BaseFragment;
+import com.example.accountmanager.fragments.presenter.MyFragmentPresenter;
 import com.example.accountmanager.utils.BiometricUtil;
 import com.example.accountmanager.utils.SpUtil;
 
-public class MyFragment extends Fragment implements View.OnClickListener {
-    private View view;
+public class MyFragment extends BaseFragment<MyFragmentPresenter> implements View.OnClickListener {
     private LinearLayout llPwd;
     private LinearLayout llFingerPwd;
     private LinearLayout llPrivate;
@@ -37,24 +38,23 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private ImageView ivPrivateChoose;
 
     private boolean hasInit = false;
-    private final MainActivity mActivity;
+    public final MainActivity mActivity;
 
     public MyFragment(MainActivity mActivity) {
         this.mActivity = mActivity;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_my, container, false);
-        initView();
-        initListener();
-        setChooseFinger();
-        setChoosePrivate();
-        return view;
+    protected int getLayoutId() {
+        return R.layout.layout_my;
     }
 
-    private void initView() {
+    @Override
+    protected MyFragmentPresenter getPresenter() {
+        return new MyFragmentPresenter();
+    }
+
+    protected void initView() {
         llPwd = view.findViewById(R.id.ll_pwd);
         llPrivate = view.findViewById(R.id.ll_private);
         llFingerPwd = view.findViewById(R.id.ll_finger_pwd);
@@ -68,7 +68,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         hasInit = true;
     }
 
-    private void initListener() {
+    protected void initListener() {
         llPwd.setOnClickListener(this);
         llPrivate.setOnClickListener(this);
         llFingerPwd.setOnClickListener(this);
@@ -76,9 +76,12 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         iv_cpy_file.setOnClickListener(this);
         iv_why_str.setOnClickListener(this);
         iv_why_file.setOnClickListener(this);
+
+        setChooseFinger();
+        setChoosePrivate();
     }
 
-    private void setChooseFinger() {
+    public void setChooseFinger() {
         if (SpUtil.getInstance().getBoolean("finger")) {
             ivFingerChoose.setImageResource(R.drawable.chosen);
         } else {
@@ -86,7 +89,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void setChoosePrivate() {
+    public void setChoosePrivate() {
         if (SpUtil.getInstance().getBoolean("privateSpace")) {
             ivPrivateChoose.setImageResource(R.drawable.chosen);
         } else {
@@ -104,10 +107,10 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 mActivity.startActivity(intent);
                 break;
             case R.id.ll_finger_pwd:
-                openFingerAuth();
+                p.openFingerAuth();
                 break;
             case R.id.ll_private:
-                openPrivateSpace();
+                p.openPrivateSpace();
                 break;
             case R.id.iv_cpy_str:
                 mActivity.getP().cpyStr();
@@ -127,41 +130,6 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 mActivity.showTip("小贴士", msg);
                 break;
         }
-    }
-
-    private void openFingerAuth() {
-        if (TextUtils.isEmpty(SpUtil.getInstance().getString("password"))) {
-            mActivity.showToast("需先设置二级密码");
-            return;
-        }
-        BiometricUtil.getInstance(mActivity).isSupportBiometric(code -> {
-            switch (code) {
-                case BiometricUtil.OnResultListener.SUPPORT_SUCCESS:
-                    boolean finger = SpUtil.getInstance().getBoolean("finger");
-                    SpUtil.getInstance().putBoolean("finger", !finger);
-                    setChooseFinger();
-                    break;
-                case BiometricUtil.OnResultListener.SUPPORT_NO_HARDWARE:
-                    mActivity.showToast("手机不支持指纹识别");
-                    break;
-                case BiometricUtil.OnResultListener.SUPPORT_UNAVAILABLE:
-                    mActivity.showToast("当前指纹识别不可用");
-                    break;
-                case BiometricUtil.OnResultListener.SUPPORT_NONE_ENROLLED:
-                    mActivity.showToast("需先在手机添加指纹数据");
-                    break;
-            }
-        });
-    }
-
-    private void openPrivateSpace() {
-        if (TextUtils.isEmpty(SpUtil.getInstance().getString("password"))) {
-            mActivity.showToast("需先设置二级密码");
-            return;
-        }
-        boolean privateState = SpUtil.getInstance().getBoolean("privateSpace");
-        SpUtil.getInstance().putBoolean("privateSpace", !privateState);
-        setChoosePrivate();
     }
 
     public void onShow() {

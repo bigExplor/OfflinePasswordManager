@@ -25,7 +25,6 @@ public class MainActivityPresenter implements BaseActivityPresenter<MainActivity
     private MainActivity view;
 
     private final TypeDao typeDao = new TypeDao();
-    private final AccountDao accountDao = new AccountDao();
 
     private final Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
         @Override
@@ -89,73 +88,5 @@ public class MainActivityPresenter implements BaseActivityPresenter<MainActivity
             return;
         }
         view.showToast(FileUtil.share(view, filePath));
-    }
-
-    /* 将密文解析为账号信息并导入 */
-    public boolean parse(String key) {
-        List<Type> typeList = null;
-        try {
-            typeList = gson.fromJson(StringUtil.decode(key), new TypeToken<List<Type>>(){}.getType());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (typeList == null) {
-            view.showToast("密钥错误！");
-            return false;
-        }
-        view.showLoading(false);
-        for (Type type : typeList) {
-            addType(type);
-        }
-        view.hideLoading();
-        view.showToast("导入完成");
-        return true;
-    }
-
-//    老版的解析方式
-//    public boolean parse(String key) {
-//        List<Account> accountList = null;
-//        try {
-//            accountList = gson.fromJson(StringUtil.decode(key), new TypeToken<List<Account>>(){}.getType());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        if (accountList == null) {
-//            view.showToast("密钥错误！");
-//            return false;
-//        }
-//        view.showLoading(false);
-//        Map<Integer, Type> map = new HashMap<>();
-//        for (Account account : accountList) {
-//            view.log_d(account.toString());
-//            Type type = map.get(account.getTypeId());
-//            if (type == null) {
-//                type = new Type();
-//                type.setName("Type_" + account.getTypeId());
-//                type.setImgId(R.drawable.others_cover);
-//                typeDao.addType(type);
-//                type.setId(typeDao.getTypeByName(type.getName()).getId());
-//                map.put(account.getTypeId(), type);
-//            }
-//            account.setTypeId(type.getId());
-//            accountDao.addAccount(account);
-//        }
-//        view.hideLoading();
-//        view.showToast("导入完成");
-//        return true;
-//    }
-
-    private void addType(Type type) {
-        Type t = typeDao.getTypeByName(type.getName());
-        if (t == null) {
-            typeDao.addType(type);
-            t = typeDao.getTypeByName(type.getName());
-        }
-        for (Account account : type.getAccounts()) {
-            Account ac = accountDao.getAccountById(account.getId());
-            if (ac != null && ac.getTitle().equals(account.getTitle())) continue;
-            account.setTypeId(t.getId());
-            accountDao.addAccount(account);
-        }
     }
 }
