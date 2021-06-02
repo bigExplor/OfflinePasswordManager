@@ -20,22 +20,24 @@ import androidx.fragment.app.Fragment;
 import com.example.accountmanager.R;
 import com.example.accountmanager.activities.MainActivity;
 import com.example.accountmanager.activities.SetPasswordActivity;
-import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.utils.BiometricUtil;
 import com.example.accountmanager.utils.SpUtil;
 
 public class MyFragment extends Fragment implements View.OnClickListener {
-    private final MainActivity mActivity;
     private View view;
-    private LinearLayout ll_pwd;
-    private LinearLayout ll_finger_pwd;
+    private LinearLayout llPwd;
+    private LinearLayout llFingerPwd;
+    private LinearLayout llPrivate;
 
     private ImageView iv_cpy_str;
     private ImageView iv_cpy_file;
-    private ImageView iv_choose;
-    private boolean hasInit = false;
     private ImageView iv_why_str;
     private ImageView iv_why_file;
+    private ImageView ivFingerChoose;
+    private ImageView ivPrivateChoose;
+
+    private boolean hasInit = false;
+    private final MainActivity mActivity;
 
     public MyFragment(MainActivity mActivity) {
         this.mActivity = mActivity;
@@ -48,23 +50,28 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         initView();
         initListener();
         setChooseFinger();
+        setChoosePrivate();
         return view;
     }
 
     private void initView() {
-        iv_choose = view.findViewById(R.id.iv_choose);
-        ll_pwd = view.findViewById(R.id.ll_pwd);
-        ll_finger_pwd = view.findViewById(R.id.ll_finger_pwd);
+        llPwd = view.findViewById(R.id.ll_pwd);
+        llPrivate = view.findViewById(R.id.ll_private);
+        llFingerPwd = view.findViewById(R.id.ll_finger_pwd);
         iv_cpy_str = view.findViewById(R.id.iv_cpy_str);
         iv_cpy_file = view.findViewById(R.id.iv_cpy_file);
         iv_why_str = view.findViewById(R.id.iv_why_str);
         iv_why_file = view.findViewById(R.id.iv_why_file);
+        ivFingerChoose = view.findViewById(R.id.iv_finger_choose);
+        ivPrivateChoose = view.findViewById(R.id.iv_private_choose);
+
         hasInit = true;
     }
 
     private void initListener() {
-        ll_pwd.setOnClickListener(this);
-        ll_finger_pwd.setOnClickListener(this);
+        llPwd.setOnClickListener(this);
+        llPrivate.setOnClickListener(this);
+        llFingerPwd.setOnClickListener(this);
         iv_cpy_str.setOnClickListener(this);
         iv_cpy_file.setOnClickListener(this);
         iv_why_str.setOnClickListener(this);
@@ -73,9 +80,17 @@ public class MyFragment extends Fragment implements View.OnClickListener {
 
     private void setChooseFinger() {
         if (SpUtil.getInstance().getBoolean("finger")) {
-            iv_choose.setImageResource(R.drawable.chosen);
+            ivFingerChoose.setImageResource(R.drawable.chosen);
         } else {
-            iv_choose.setImageResource(R.drawable.no_chosen);
+            ivFingerChoose.setImageResource(R.drawable.no_chosen);
+        }
+    }
+
+    private void setChoosePrivate() {
+        if (SpUtil.getInstance().getBoolean("privateSpace")) {
+            ivPrivateChoose.setImageResource(R.drawable.chosen);
+        } else {
+            ivPrivateChoose.setImageResource(R.drawable.no_chosen);
         }
     }
 
@@ -90,6 +105,9 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.ll_finger_pwd:
                 openFingerAuth();
+                break;
+            case R.id.ll_private:
+                openPrivateSpace();
                 break;
             case R.id.iv_cpy_str:
                 mActivity.getP().cpyStr();
@@ -136,9 +154,20 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         });
     }
 
+    private void openPrivateSpace() {
+        if (TextUtils.isEmpty(SpUtil.getInstance().getString("password"))) {
+            mActivity.showToast("需先设置二级密码");
+            return;
+        }
+        boolean privateState = SpUtil.getInstance().getBoolean("privateSpace");
+        SpUtil.getInstance().putBoolean("privateSpace", !privateState);
+        setChoosePrivate();
+    }
+
     public void onShow() {
         if (hasInit) {
             setChooseFinger();
+            setChoosePrivate();
         }
     }
 }

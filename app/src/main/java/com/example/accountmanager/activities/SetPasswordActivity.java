@@ -73,8 +73,9 @@ public class SetPasswordActivity extends BaseActivity<SetPasswordActivityPresent
             return;
         }
         if (hasPwd) {
-            SpUtil.getInstance().removeValue("password");
             SpUtil.getInstance().removeValue("finger");
+            SpUtil.getInstance().removeValue("password");
+            SpUtil.getInstance().removeValue("privateSpace");
             showToast("关闭成功");
         } else {
             SpUtil.getInstance().putString("password", pwd);

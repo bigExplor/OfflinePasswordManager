@@ -20,6 +20,8 @@ import com.example.accountmanager.activities.SearchActivity;
 import com.example.accountmanager.adapters.TypeAdapter;
 import com.example.accountmanager.bean.Type;
 import com.example.accountmanager.dao.TypeDao;
+import com.example.accountmanager.utils.Constants;
+import com.example.accountmanager.utils.SpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +74,13 @@ public class HomeFragment extends Fragment {
     private void getTypeList() {
         typeList = dao.getAllType();
         if (typeList == null) typeList = new ArrayList<>();
+        if (!typeList.isEmpty() && !SpUtil.getInstance().getBoolean("privateSpace")) {
+            int i;
+            for (i = 0; i < typeList.size(); ++i) {
+                if (typeList.get(i).getName().equals(Constants.privateName)) break;
+            }
+            typeList.remove(i);
+        }
     }
 
     public void onShow() {
