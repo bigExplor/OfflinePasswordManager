@@ -7,7 +7,7 @@ import android.widget.EditText;
 
 import com.example.accountmanager.R;
 import com.example.accountmanager.base.BaseActivity;
-import com.example.accountmanager.presenter.SetPasswordActivityPresenter;
+import com.example.accountmanager.activities.presenter.SetPasswordActivityPresenter;
 import com.example.accountmanager.ui.TitleBar;
 import com.example.accountmanager.utils.SpUtil;
 

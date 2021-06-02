@@ -2,19 +2,17 @@ package com.example.accountmanager.base;
 
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewTreeObserver;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.accountmanager.R;
-import com.example.accountmanager.presenter.BasePresenter;
+import com.example.accountmanager.activities.presenter.BasePresenter;
 import com.example.accountmanager.ui.LoadingDialog;
 import com.example.accountmanager.utils.BiometricUtil;
 import com.example.accountmanager.utils.LogUtil;

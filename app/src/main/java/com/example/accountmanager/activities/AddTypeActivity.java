@@ -13,7 +13,7 @@ import com.example.accountmanager.adapters.ChooseTypeImgAdapter;
 import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.bean.Type;
 import com.example.accountmanager.bean.TypeImg;
-import com.example.accountmanager.presenter.AddTypeActivityPresenter;
+import com.example.accountmanager.activities.presenter.AddTypeActivityPresenter;
 import com.example.accountmanager.ui.TitleBar;
 
 import java.util.ArrayList;

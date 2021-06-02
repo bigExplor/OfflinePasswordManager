@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.example.accountmanager.R;
 import com.example.accountmanager.base.BaseActivity;
-import com.example.accountmanager.presenter.PasswordActivityPresenter;
+import com.example.accountmanager.activities.presenter.PasswordActivityPresenter;
 import com.example.accountmanager.ui.CircleView;
 import com.example.accountmanager.utils.SpUtil;
 

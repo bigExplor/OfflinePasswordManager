@@ -1,4 +1,4 @@
-package com.example.accountmanager.presenter;
+package com.example.accountmanager.activities.presenter;
 
 import com.example.accountmanager.activities.SetPasswordActivity;
 

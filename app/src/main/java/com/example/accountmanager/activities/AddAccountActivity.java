@@ -13,7 +13,7 @@ import com.example.accountmanager.R;
 import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.bean.Account;
 import com.example.accountmanager.bean.Type;
-import com.example.accountmanager.presenter.AddAccountActivityPresenter;
+import com.example.accountmanager.activities.presenter.AddAccountActivityPresenter;
 import com.example.accountmanager.ui.TitleBar;
 
 import java.util.ArrayList;

@@ -11,7 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.accountmanager.R;
 import com.example.accountmanager.adapters.AccountAdapter;
 import com.example.accountmanager.base.BaseActivity;
-import com.example.accountmanager.presenter.AccountBookActivityPresenter;
+import com.example.accountmanager.activities.presenter.AccountBookActivityPresenter;
 import com.example.accountmanager.ui.TitleBar;
 import com.example.accountmanager.utils.Constants;
 

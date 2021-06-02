@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.accountmanager.R;
 import com.example.accountmanager.adapters.SearchItemAdapter;
 import com.example.accountmanager.base.BaseActivity;
-import com.example.accountmanager.presenter.SearchActivityPresenter;
+import com.example.accountmanager.activities.presenter.SearchActivityPresenter;
 
 /**
  * @author CharlesLu

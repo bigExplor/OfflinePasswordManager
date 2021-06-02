@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.example.accountmanager.R;
 import com.example.accountmanager.base.BaseActivity;
-import com.example.accountmanager.presenter.SplashActivityPresenter;
+import com.example.accountmanager.activities.presenter.SplashActivityPresenter;
 import com.example.accountmanager.utils.SpUtil;
 import com.example.accountmanager.utils.TimeUtil;
 

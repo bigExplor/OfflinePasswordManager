@@ -14,7 +14,7 @@ import com.example.accountmanager.base.BaseActivity;
 import com.example.accountmanager.fragments.ChestFragment;
 import com.example.accountmanager.fragments.HomeFragment;
 import com.example.accountmanager.fragments.MyFragment;
-import com.example.accountmanager.presenter.MainActivityPresenter;
+import com.example.accountmanager.activities.presenter.MainActivityPresenter;
 import com.example.accountmanager.ui.TitleBar;
 import com.example.accountmanager.utils.TimeUtil;
 
