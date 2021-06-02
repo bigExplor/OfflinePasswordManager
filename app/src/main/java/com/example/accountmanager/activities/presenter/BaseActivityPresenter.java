@@ -7,6 +7,6 @@ import com.example.accountmanager.base.BaseActivity;
  * @date 2021/5/27 11:12
  * @description
  */
-public interface BasePresenter<V extends BaseActivity> {
+public interface BaseActivityPresenter<V extends BaseActivity> {
     void bindView(V view);
 }

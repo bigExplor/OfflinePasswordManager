@@ -12,7 +12,7 @@ import com.example.accountmanager.dao.TypeDao;
  * @date 2021/5/27 17:46
  * @description
  */
-public class AddAccountActivityPresenter implements BasePresenter<AddAccountActivity> {
+public class AddAccountActivityPresenter implements BaseActivityPresenter<AddAccountActivity> {
     private AddAccountActivity view;
 
     private final TypeDao typeDao = new TypeDao();

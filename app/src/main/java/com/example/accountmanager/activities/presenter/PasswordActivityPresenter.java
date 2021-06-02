@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2021/5/27 12:55
  * @description
  */
-public class PasswordActivityPresenter implements BasePresenter<PasswordActivity> {
+public class PasswordActivityPresenter implements BaseActivityPresenter<PasswordActivity> {
     private PasswordActivity view;
 
     private final List<Integer> pwd = new ArrayList<>();

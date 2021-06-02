@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2021/5/27 13:43
  * @description
  */
-public class AccountBookActivityPresenter implements BasePresenter<AccountBookActivity> {
+public class AccountBookActivityPresenter implements BaseActivityPresenter<AccountBookActivity> {
     private AccountBookActivity view;
 
     private AccountAdapter adapter;

@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2021/5/27 11:22
  * @description
  */
-public class MainActivityPresenter implements BasePresenter<MainActivity> {
+public class MainActivityPresenter implements BaseActivityPresenter<MainActivity> {
     private MainActivity view;
 
     private final TypeDao typeDao = new TypeDao();

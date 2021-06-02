@@ -7,7 +7,7 @@ import com.example.accountmanager.activities.SplashActivity;
  * @date 2021/6/1 17:11
  * @description
  */
-public class SplashActivityPresenter implements BasePresenter<SplashActivity> {
+public class SplashActivityPresenter implements BaseActivityPresenter<SplashActivity> {
     @Override
     public void bindView(SplashActivity view) { }
 }

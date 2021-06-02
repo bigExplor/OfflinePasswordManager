@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2021/5/27 13:22
  * @description
  */
-public class SearchActivityPresenter implements BasePresenter<SearchActivity> {
+public class SearchActivityPresenter implements BaseActivityPresenter<SearchActivity> {
     private SearchActivity view;
 
     private SearchItemAdapter adapter;

@@ -7,7 +7,7 @@ import com.example.accountmanager.activities.SetPasswordActivity;
  * @date 2021/6/1 17:09
  * @description
  */
-public class SetPasswordActivityPresenter implements BasePresenter<SetPasswordActivity> {
+public class SetPasswordActivityPresenter implements BaseActivityPresenter<SetPasswordActivity> {
     @Override
     public void bindView(SetPasswordActivity view) { }
 }

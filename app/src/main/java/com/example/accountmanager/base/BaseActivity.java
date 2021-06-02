@@ -12,7 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.accountmanager.R;
-import com.example.accountmanager.activities.presenter.BasePresenter;
+import com.example.accountmanager.activities.presenter.BaseActivityPresenter;
 import com.example.accountmanager.ui.LoadingDialog;
 import com.example.accountmanager.utils.BiometricUtil;
 import com.example.accountmanager.utils.LogUtil;
@@ -21,7 +21,7 @@ import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.Objects;
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity {
+public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppCompatActivity {
     private ToastUtil toastUtil;
     private ClipboardManager cm;
 
