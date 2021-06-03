@@ -44,6 +44,7 @@ public class ChestFragmentPresenter implements BaseFragmentPresenter<ChestFragme
     public boolean parse(String key) {
         List<Type> typeList = null;
         try {
+            view.mActivity.log_d(StringUtil.decode(key));
             typeList = gson.fromJson(StringUtil.decode(key), new TypeToken<List<Type>>(){}.getType());
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,6 +55,7 @@ public class ChestFragmentPresenter implements BaseFragmentPresenter<ChestFragme
         }
         view.mActivity.showLoading(false);
         for (Type type : typeList) {
+            if (type.getImgName() == null) type.setImgName("");
             addType(type);
         }
         view.mActivity.hideLoading();

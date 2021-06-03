@@ -3,7 +3,6 @@ package com.example.accountmanager.dao;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.accountmanager.R;
 import com.example.accountmanager.bean.Account;
 import com.example.accountmanager.bean.Type;
 
@@ -62,8 +61,8 @@ public class TypeDao {
     /* 添加类别信息 */
     public void addType(Type type) {
         db = helper.getWritableDatabase();
-        String sql = "insert into type (name, imgId) values (?, ?) ";
-        db.execSQL(sql, new String[]{type.getName(), "" + type.getImgId()});
+        String sql = "insert into type (name, imgId, imgName) values (?, ?, ?) ";
+        db.execSQL(sql, new String[]{type.getName(), "" + type.getImgId(), type.getImgName()});
         db.close();
     }
 
@@ -78,8 +77,8 @@ public class TypeDao {
     /* 更新类别信息 */
     public void updateType(Type type) {
         db = helper.getWritableDatabase();
-        String sql = "update type set name = ?, imgId = ? where id = ? ";
-        db.execSQL(sql, new String[]{type.getName(), "" + type.getImgId(), "" + type.getId()});
+        String sql = "update type set name = ?, imgId = ?, imgName = ? where id = ? ";
+        db.execSQL(sql, new String[]{type.getName(), "" + type.getImgId(), type.getImgName(), "" + type.getId()});
         db.close();
     }
 
@@ -88,9 +87,8 @@ public class TypeDao {
         Type type = new Type();
         type.setId(cursor.getInt(cursor.getColumnIndex("id")));
         type.setName(cursor.getString(cursor.getColumnIndex("name")));
-        int imgId = cursor.getInt(cursor.getColumnIndex("imgId"));
-        if (imgId <= 0) imgId = R.drawable.others_cover;
-        type.setImgId(imgId);
+        type.setImgName(cursor.getString(cursor.getColumnIndex("imgName")));
+        type.setImgId(type.string2ImgId());
         List<Account> accounts = accountDao.getAccountByType(type.getId());
         type.setAccounts(accounts);
         for (Account account: accounts) {

@@ -101,6 +101,7 @@ public class AddTypeActivity extends BaseActivity<AddTypeActivityPresenter> {
             }
             type.setImgId(imgId);
             type.setName(mEtType.getText().toString().trim());
+            type.setImgName(type.imgId2String());
             p.commit();
         });
         mCancelBtn.setOnClickListener(v -> p.delete());

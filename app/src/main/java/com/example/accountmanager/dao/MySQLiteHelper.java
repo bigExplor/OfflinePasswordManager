@@ -16,18 +16,27 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    // 获取实例
+    public static MySQLiteHelper getInstance() {
+        if (helper == null) {
+            helper = new MySQLiteHelper(BaseApplication.instance, "account", null, 1);
+        }
+        return helper;
+    }
+
     // 默认创建三张表，和一个管理员账号
     @Override
     public void onCreate(SQLiteDatabase db) {
         String typeSQL = "create table type(\n" +
                 "id integer primary key autoincrement,\n" +
                 "name varchar(20),\n" +
-                "imgId integer\n" +
+                "imgId integer,\n" +
+                "imgName varchar(20)\n" +
                 ") ";
         db.execSQL(typeSQL);
 
-        String sql = "insert into type (id, name, imgId) values (?, ?, ?) ";
-        db.execSQL(sql, new Object[]{Constants.privateId, Constants.privateName, Constants.privateImgId});
+        String sql = "insert into type (id, name, imgId, imgName) values (?, ?, ?, ?) ";
+        db.execSQL(sql, new Object[]{Constants.privateId, Constants.privateName, Constants.privateImgId, "private_cover"});
 
         String accountSQL = "create table account(\n" +
                 "id integer primary key autoincrement,\n" +
@@ -45,13 +54,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { }
-
-    // 获取实例
-    public static MySQLiteHelper getInstance() {
-        if (helper == null) {
-            helper = new MySQLiteHelper(BaseApplication.instance, "account", null, 1);
-        }
-        return helper;
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+//        int currentVersion = oldVersion;
+//        if (currentVersion == 1) {
+//            String sql = " alter table type add column imgName varchar(20) ";
+//            db.execSQL(sql);
+//            currentVersion = 2;
+//        }
     }
 }
